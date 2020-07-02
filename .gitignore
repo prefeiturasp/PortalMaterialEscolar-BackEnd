@@ -276,3 +276,11 @@ sme_material_apps/media/
 .ipython/
 .env
 .envs/*
+
+# Pyre type checker
+.pyre/
+.idea/
+.vscode/
+
+# Media folder
+media/
