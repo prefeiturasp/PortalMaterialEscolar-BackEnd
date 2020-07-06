@@ -22,7 +22,7 @@ Versão: 0.1.0
 7.  Faça um Pull Request com o seu desenvolvimento
 
 ```console
-git clone https://github.com/prefeiturasp/SME-PortalUniforme-BackEnd.git back
+git clone https://github.com/prefeiturasp/PortalMaterialEscolar-BackEnd.git back
 cd back
 python -m venv .venv
 source .venv/bin/activate
