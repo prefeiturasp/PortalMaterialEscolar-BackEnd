@@ -1,8 +1,13 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 #
-from .models import (Proponente, Loja, Anexo, TipoDocumento)
+from .models import (Proponente, OfertaDeMaterial, Loja, Anexo, TipoDocumento)
 # from .services import muda_status_de_proponentes, atualiza_coordenadas
+
+
+class MateriaisFornecidosInLine(admin.TabularInline):
+    model = OfertaDeMaterial
+    extra = 1  # Quantidade de linhas que serão exibidas.
 
 
 class LojasInLine(admin.StackedInline):
@@ -87,8 +92,20 @@ class ProponenteAdmin(admin.ModelAdmin):
     ordering = ('-alterado_em',)
     search_fields = ('uuid', 'cnpj', 'razao_social', 'responsavel')
     list_filter = ('status',)
-    inlines = [LojasInLine, AnexosInLine]
+    inlines = [MateriaisFornecidosInLine, LojasInLine, AnexosInLine]
     readonly_fields = ('uuid', 'id')
+
+
+@admin.register(OfertaDeMaterial)
+class OfertaDeMaterialAdmin(admin.ModelAdmin):
+    @staticmethod
+    def protocolo(oferta):
+        return oferta.proponente.protocolo
+
+    list_display = ('protocolo', 'proponente', 'material', 'preco')
+    ordering = ('proponente',)
+    search_fields = ('proponente__uuid', 'material__nome',)
+    list_filter = ('material',)
 
 
 @admin.register(Loja)

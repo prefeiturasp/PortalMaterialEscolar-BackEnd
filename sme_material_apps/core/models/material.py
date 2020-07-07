@@ -9,6 +9,10 @@ class Material(ModeloBase):
 
     preco_maximo = models.DecimalField('Preço Máximo', max_digits=9, decimal_places=2, default=0.00)
 
+    def __str__(self):
+
+        return f'{self.nome}'
+
     class Meta:
         verbose_name = "Item de Material"
         verbose_name_plural = "Itens de Materiais"
