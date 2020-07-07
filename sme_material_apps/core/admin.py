@@ -1,6 +1,13 @@
 from django.contrib import admin
 
-from .models import Parametros
+from .models import Parametros, Material
+
+
+@admin.register(Material)
+class UniformeAdmin(admin.ModelAdmin):
+    list_display = ('nome', 'preco_maximo')
+    ordering = ('nome',)
+    search_fields = ('nome',)
 
 
 @admin.register(Parametros)
