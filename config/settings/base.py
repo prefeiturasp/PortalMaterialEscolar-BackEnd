@@ -354,3 +354,5 @@ sentry_sdk.init(
     dsn=env('SENTRY_URL'),
     integrations=[DjangoIntegration()]
 )
+
+GEOREF_API_URL=env('GEOREF_API_URL')

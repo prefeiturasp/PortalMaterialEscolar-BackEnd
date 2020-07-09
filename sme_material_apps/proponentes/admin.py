@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 #
 from .models import (Proponente, OfertaDeMaterial, Loja, Anexo, TipoDocumento)
-# from .services import muda_status_de_proponentes, atualiza_coordenadas
+from .services import muda_status_de_proponentes, atualiza_coordenadas
 
 
 class MateriaisFornecidosInLine(admin.TabularInline):
@@ -22,54 +22,54 @@ class AnexosInLine(admin.TabularInline):
 
 @admin.register(Proponente)
 class ProponenteAdmin(admin.ModelAdmin):
-    # def muda_status_para_inscrito(self, request, queryset):
-    #     muda_status_de_proponentes(queryset, Proponente.STATUS_INSCRITO)
-    #     self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_INSCRITO]}.')
-    #
-    # muda_status_para_inscrito.short_description = f'Status ==> {Proponente.STATUS_NOMES[Proponente.STATUS_INSCRITO]}.'
-    #
-    # def muda_status_para_em_processo(self, request, queryset):
-    #     muda_status_de_proponentes(queryset, Proponente.STATUS_EM_PROCESSO)
-    #     self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_EM_PROCESSO]}.')
-    #
-    # muda_status_para_em_processo.short_description = \
-    #     f'Status ==> {Proponente.STATUS_NOMES[Proponente.STATUS_EM_PROCESSO]}.'
-    #
-    # def muda_status_para_aprovado(self, request, queryset):
-    #     muda_status_de_proponentes(queryset, Proponente.STATUS_APROVADO)
-    #     self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_APROVADO]}.')
-    #
-    # muda_status_para_aprovado.short_description = f'Status ==> {Proponente.STATUS_NOMES[Proponente.STATUS_APROVADO]}.'
-    #
-    # def muda_status_para_reprovado(self, request, queryset):
-    #     muda_status_de_proponentes(queryset, Proponente.STATUS_REPROVADO)
-    #     self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_REPROVADO]}.')
-    #
-    # muda_status_para_reprovado.short_description = f'Status ==> {Proponente.STATUS_NOMES[Proponente.STATUS_REPROVADO]}.'
-    #
-    # def muda_status_para_pendente(self, request, queryset):
-    #     muda_status_de_proponentes(queryset, Proponente.STATUS_PENDENTE)
-    #     self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_PENDENTE]}.')
-    #
-    # muda_status_para_pendente.short_description = f'Status ==> {Proponente.STATUS_NOMES[Proponente.STATUS_PENDENTE]}.'
-    #
-    # def muda_status_para_em_analise(self, request, queryset):
-    #     muda_status_de_proponentes(queryset, Proponente.STATUS_EM_ANALISE)
-    #     self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_EM_ANALISE]}.')
-    #
-    # muda_status_para_em_analise.short_description = f'Status ==> {Proponente.STATUS_NOMES[Proponente.STATUS_EM_ANALISE]}.'
-    #
-    # def muda_status_para_credenciado(self, request, queryset):
-    #     muda_status_de_proponentes(queryset, Proponente.STATUS_CREDENCIADO)
-    #     self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_CREDENCIADO]}.')
-    #
-    # muda_status_para_credenciado.short_description = f'Status ==> {Proponente.STATUS_NOMES[Proponente.STATUS_CREDENCIADO]}.'
-    #
-    # def atualiza_coordenadas_action(self, request, queryset):
-    #     atualiza_coordenadas(queryset)
-    #     self.message_user(request, f'Coordenadas das lojas físicas para proponentes CREDENCIADOS foram atualizados.')
-    #
-    # atualiza_coordenadas_action.short_description = f'Atualiza coordenadas.'
+    def muda_status_para_inscrito(self, request, queryset):
+        muda_status_de_proponentes(queryset, Proponente.STATUS_INSCRITO)
+        self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_INSCRITO]}.')
+
+    muda_status_para_inscrito.short_description = f'Status ==> {Proponente.STATUS_NOMES[Proponente.STATUS_INSCRITO]}.'
+
+    def muda_status_para_em_processo(self, request, queryset):
+        muda_status_de_proponentes(queryset, Proponente.STATUS_EM_PROCESSO)
+        self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_EM_PROCESSO]}.')
+
+    muda_status_para_em_processo.short_description = \
+        f'Status ==> {Proponente.STATUS_NOMES[Proponente.STATUS_EM_PROCESSO]}.'
+
+    def muda_status_para_aprovado(self, request, queryset):
+        muda_status_de_proponentes(queryset, Proponente.STATUS_APROVADO)
+        self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_APROVADO]}.')
+
+    muda_status_para_aprovado.short_description = f'Status ==> {Proponente.STATUS_NOMES[Proponente.STATUS_APROVADO]}.'
+
+    def muda_status_para_reprovado(self, request, queryset):
+        muda_status_de_proponentes(queryset, Proponente.STATUS_REPROVADO)
+        self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_REPROVADO]}.')
+
+    muda_status_para_reprovado.short_description = f'Status ==> {Proponente.STATUS_NOMES[Proponente.STATUS_REPROVADO]}.'
+
+    def muda_status_para_pendente(self, request, queryset):
+        muda_status_de_proponentes(queryset, Proponente.STATUS_PENDENTE)
+        self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_PENDENTE]}.')
+
+    muda_status_para_pendente.short_description = f'Status ==> {Proponente.STATUS_NOMES[Proponente.STATUS_PENDENTE]}.'
+
+    def muda_status_para_em_analise(self, request, queryset):
+        muda_status_de_proponentes(queryset, Proponente.STATUS_EM_ANALISE)
+        self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_EM_ANALISE]}.')
+
+    muda_status_para_em_analise.short_description = f'Status ==> {Proponente.STATUS_NOMES[Proponente.STATUS_EM_ANALISE]}.'
+
+    def muda_status_para_credenciado(self, request, queryset):
+        muda_status_de_proponentes(queryset, Proponente.STATUS_CREDENCIADO)
+        self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_CREDENCIADO]}.')
+
+    muda_status_para_credenciado.short_description = f'Status ==> {Proponente.STATUS_NOMES[Proponente.STATUS_CREDENCIADO]}.'
+
+    def atualiza_coordenadas_action(self, request, queryset):
+        atualiza_coordenadas(queryset)
+        self.message_user(request, f'Coordenadas das lojas físicas para proponentes CREDENCIADOS foram atualizados.')
+
+    atualiza_coordenadas_action.short_description = f'Atualiza coordenadas.'
 
     def ultima_alteracao(self, obj):
         return obj.alterado_em.strftime("%d/%m/%Y %H:%M:%S")

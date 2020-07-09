@@ -3,8 +3,10 @@ import logging
 import requests
 from django.conf import settings
 
-from ..custom_user.models import User
+# from ..custom_user.models import User
+from django.contrib.auth import get_user_model
 
+user_model = get_user_model()
 LAYERS = 'address'
 BUNDARY = 'whosonfirst:locality:101965533'
 API_URL = f'{settings.GEOREF_API_URL}/v1/search'
@@ -13,7 +15,7 @@ log = logging.getLogger(__name__)
 
 
 def cria_usuario_novo_proponente(proponente):
-    User.cria_usuario(email=proponente.email, nome=proponente.responsavel, senha=proponente.protocolo)
+    user_model.cria_usuario(email=proponente.email, nome=proponente.responsavel, senha=proponente.protocolo)
 
 
 def muda_status_de_proponentes(queryset, novo_status):
