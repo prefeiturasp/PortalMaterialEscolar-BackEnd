@@ -9,6 +9,7 @@ from rest_framework.authtoken.views import obtain_auth_token
 from rest_framework_swagger.views import get_swagger_view
 
 from sme_material_apps.core.api.urls import urlpatterns as core_url
+from sme_material_apps.proponentes.urls import urlpatterns as proponentes_url
 
 schema_view = get_swagger_view(title="Portal SME Material Escolar")
 
@@ -26,11 +27,12 @@ urlpatterns = [
 # API URLS
 urlpatterns += [
     # API base url
-    # path("v1/", include("config.api_router")),
+    # path("v1/", include(core_url)),
     # DRF auth token
     path("auth-token/", obtain_auth_token),
 ]
 urlpatterns += core_url
+urlpatterns += proponentes_url
 
 if settings.DEBUG:
     # This allows the error pages to be debugged during development, just visit

@@ -83,6 +83,7 @@ THIRD_PARTY_APPS = [
     "allauth.socialaccount",
     "django_celery_beat",
     "des",
+    "auditlog",
     "rest_framework",
     "rest_framework.authtoken",
     'corsheaders',
@@ -93,6 +94,8 @@ THIRD_PARTY_APPS = [
 
 LOCAL_APPS = [
     "sme_material_apps.custom_user.apps.CustomUserConfig",
+    "sme_material_apps.core.apps.CoreConfig",
+    "sme_material_apps.proponentes.apps.ProponentesConfig",
     # Your stuff: custom apps go here
 ]
 # https://docs.djangoproject.com/en/dev/ref/settings/#installed-apps
@@ -152,6 +155,7 @@ MIDDLEWARE = [
     "django.contrib.messages.middleware.MessageMiddleware",
     "django.middleware.common.BrokenLinkEmailsMiddleware",
     "django.middleware.clickjacking.XFrameOptionsMiddleware",
+    "auditlog.middleware.AuditlogMiddleware",
 ]
 
 # STATIC
@@ -350,3 +354,5 @@ sentry_sdk.init(
     dsn=env('SENTRY_URL'),
     integrations=[DjangoIntegration()]
 )
+
+GEOREF_API_URL=env('GEOREF_API_URL')
