@@ -1,0 +1,36 @@
+version: '3'
+
+volumes:
+
+services:
+  django: &django
+    build:
+      context: .
+      dockerfile: ./compose/production/django/Dockerfile
+    image: sme_material_apps_production_django
+    depends_on:
+      - redis
+    env_file:
+      - ./.envs/.production/.django
+      - ./.envs/.production/.postgres
+    command: /start
+
+  redis:
+    image: redis:5.0
+
+  celeryworker:
+    <<: *django
+    image: sme_material_apps_production_celeryworker
+    command: /start-celeryworker
+
+  celerybeat:
+    <<: *django
+    image: sme_material_apps_production_celerybeat
+    command: /start-celerybeat
+
+  flower:
+    <<: *django
+    image: sme_material_apps_production_flower
+    command: /start-flower
+
+
