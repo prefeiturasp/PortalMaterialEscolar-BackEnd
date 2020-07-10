@@ -12,7 +12,7 @@ from ...core.models.material import Material
 class OfertaDeMaterial(ModeloBase):
     # historico = AuditlogHistoryField()
 
-    proponente = models.ForeignKey(Proponente, on_delete=models.CASCADE, related_name='ofertas_de_uniformes',
+    proponente = models.ForeignKey(Proponente, on_delete=models.CASCADE, related_name='ofertas_de_materiais',
                                    blank=True, null=True)
     material = models.ForeignKey(Material, on_delete=models.PROTECT, related_name='proponentes')
     preco = models.DecimalField('Preço', max_digits=9, decimal_places=2, default=0.00)
