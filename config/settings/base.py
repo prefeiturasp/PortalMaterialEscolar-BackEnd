@@ -316,8 +316,8 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # django-compressor
 # ------------------------------------------------------------------------------
 # https://django-compressor.readthedocs.io/en/latest/quickstart/#installation
-INSTALLED_APPS += ["compressor"]
-STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
+# INSTALLED_APPS += ["compressor"]
+# STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 
 # django-rest-framework
 # -------------------------------------------------------------------------------
