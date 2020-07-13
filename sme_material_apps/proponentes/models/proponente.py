@@ -96,6 +96,24 @@ class Proponente(ModeloBase):
         blank=True
     )
 
+    end_complemento = models.CharField(
+        'complemento',
+        max_length=100,
+        blank=True
+    )
+
+    end_numero = models.CharField(
+        'número',
+        max_length=20,
+        blank=True
+    )
+
+    end_bairro = models.CharField(
+        'bairro',
+        max_length=100,
+        blank=True
+    )
+
     end_cidade = models.CharField(
         'cidade',
         max_length=80,

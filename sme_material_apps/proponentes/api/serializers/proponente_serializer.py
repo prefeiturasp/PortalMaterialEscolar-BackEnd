@@ -76,10 +76,12 @@ class ProponenteCreateSerializer(serializers.ModelSerializer):
         ofertas_de_materiais = validated_data.pop('ofertas_de_materiais')
         lojas = validated_data.pop('lojas')
 
+        """
         if not ofertas_de_materiais:
             msgError = "Pelo menos uma oferta deve ser enviada!"
             log.info(msgError)
             raise ValidationError(msgError)
+        """
 
         if not lojas:
             msgError = "Pelo menos uma loja precisa ser enviada!"
