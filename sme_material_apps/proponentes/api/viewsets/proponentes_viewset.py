@@ -6,9 +6,10 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
+from sme_material_apps.core.models import Material
 from ..serializers.proponente_serializer import ProponenteSerializer, ProponenteCreateSerializer
 
-from ...models import Proponente
+from ...models import Proponente, OfertaDeMaterial
 
 
 class ProponentesViewSet(mixins.CreateModelMixin,
@@ -16,7 +17,6 @@ class ProponentesViewSet(mixins.CreateModelMixin,
                          mixins.UpdateModelMixin,
                          mixins.DestroyModelMixin,
                          GenericViewSet):
-
     permission_classes = [AllowAny]
     lookup_field = 'uuid'
     queryset = Proponente.objects.all()
@@ -34,6 +34,20 @@ class ProponentesViewSet(mixins.CreateModelMixin,
             return ProponenteSerializer
         else:
             return ProponenteCreateSerializer
+
+    @action(detail=True, methods=['patch'], url_path='tabela-precos')
+    def tabela_precos(self, request, uuid):
+        proponente = self.get_object()
+        for unidade_preco in request.data.get('ofertas_de_materiais'):
+            proponente.ofertas_de_materiais.all().delete()
+            material = Material.objects.get(nome=unidade_preco.get('nome'))
+            oferta_de_material = OfertaDeMaterial(
+                proponente=proponente,
+                material=material,
+                preco=unidade_preco.get('valor')
+            )
+            oferta_de_material.save()
+        return Response(self.get_serializer(proponente).data, status=status.HTTP_200_OK)
 
     @action(detail=False, url_path='verifica-cnpj')
     def verifica_cnpj(self, request):
