@@ -319,6 +319,7 @@ ACCOUNT_EMAIL_VERIFICATION = "mandatory"
 # INSTALLED_APPS += ["compressor"]
 # STATICFILES_FINDERS += ["compressor.finders.CompressorFinder"]
 
+
 # django-rest-framework
 # -------------------------------------------------------------------------------
 # django-rest-framework - https://www.django-rest-framework.org/api-guide/settings/
