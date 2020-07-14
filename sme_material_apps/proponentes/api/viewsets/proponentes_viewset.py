@@ -38,8 +38,8 @@ class ProponentesViewSet(mixins.CreateModelMixin,
     @action(detail=True, methods=['patch'], url_path='tabela-precos')
     def tabela_precos(self, request, uuid):
         proponente = self.get_object()
+        proponente.ofertas_de_materiais.all().delete()
         for unidade_preco in request.data.get('ofertas_de_materiais'):
-            proponente.ofertas_de_materiais.all().delete()
             material = Material.objects.get(nome=unidade_preco.get('nome'))
             oferta_de_material = OfertaDeMaterial(
                 proponente=proponente,
