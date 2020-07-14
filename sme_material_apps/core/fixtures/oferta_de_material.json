@@ -29,6 +29,15 @@
   {
     "model": "core.material",
     "fields": {
+      "nome": "Borracha",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
       "nome": "Caderno brochurão 80 Fls.",
       "preco_maximo": 10,
       "criado_em": "2020-01-01",
