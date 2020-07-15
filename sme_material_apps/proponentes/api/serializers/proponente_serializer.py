@@ -4,6 +4,7 @@ from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
 # from ....core.models import Material
+from sme_material_apps.proponentes.services import atualiza_coordenadas_lojas
 from ...api.serializers.anexo_serializer import AnexoSerializer
 from ...api.serializers.loja_serializer import (LojaCreateSerializer,
                                                 LojaSerializer)
@@ -76,10 +77,12 @@ class ProponenteCreateSerializer(serializers.ModelSerializer):
         ofertas_de_materiais = validated_data.pop('ofertas_de_materiais')
         lojas = validated_data.pop('lojas')
 
+        """
         if not ofertas_de_materiais:
             msgError = "Pelo menos uma oferta deve ser enviada!"
             log.info(msgError)
             raise ValidationError(msgError)
+        """
 
         if not lojas:
             msgError = "Pelo menos uma loja precisa ser enviada!"
@@ -117,6 +120,7 @@ class ProponenteCreateSerializer(serializers.ModelSerializer):
             loja_object = LojaCreateSerializer().create(loja)
             lojas_lista.append(loja_object)
         proponente.lojas.set(lojas_lista)
+        atualiza_coordenadas_lojas(proponente.lojas)
         log.info("Proponente {}, lojas: {}".format(proponente.uuid, ofertas_lista))
         log.info("Criação de proponente finalizada!")
 

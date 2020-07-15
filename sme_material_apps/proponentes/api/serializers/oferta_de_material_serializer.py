@@ -1,10 +1,13 @@
 from rest_framework import serializers
 
 from ...models import OfertaDeMaterial
+from ....core.api.serializers.material_serializer import MaterialSerializer
 from ....core.models.material import Material
 
 
 class OfertaDeMaterialSerializer(serializers.ModelSerializer):
+    material = MaterialSerializer()
+
 
     class Meta:
         model = OfertaDeMaterial

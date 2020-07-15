@@ -1,0 +1,227 @@
+[
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Agenda Educação Infantil",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Agenda Ensino Fundamental",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Apontador",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Borracha",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Caderno brochurão 80 Fls.",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Caderno desenho 96 Fls.",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Caderno universitário 96 Fls.",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Caderno universitário 200 Fls.",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Caneta esferográfica azul",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Caneta esferográfica preta",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Caneta esferográfica vermelha",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Caneta hidrográfica (12 cores)",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Cola branca",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Esquadro 45º",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Esquadro 60º",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Estojo escolar",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Giz de cera Ensino Fundamental (12 cores)",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Giz de cera grosso Educação Infantil (12 cores)",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Lápis de cor (12 cores)",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Lápis grafite",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Massa para modelar (06 cores)",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Régua",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Tesoura",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Tinta guache (06 cores)",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  },
+  {
+    "model": "core.material",
+    "fields": {
+      "nome": "Transferidor 180º",
+      "preco_maximo": 10,
+      "criado_em": "2020-01-01",
+      "alterado_em": "2020-01-01"
+    }
+  }
+]
