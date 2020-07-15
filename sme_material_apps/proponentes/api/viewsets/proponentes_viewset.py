@@ -47,7 +47,7 @@ class ProponentesViewSet(mixins.CreateModelMixin,
                 preco=unidade_preco.get('valor')
             )
             oferta_de_material.save()
-        return Response(self.get_serializer(proponente).data, status=status.HTTP_200_OK)
+        return Response(ProponenteSerializer(proponente).data, status=status.HTTP_200_OK)
 
     @action(detail=False, url_path='verifica-cnpj')
     def verifica_cnpj(self, request):
