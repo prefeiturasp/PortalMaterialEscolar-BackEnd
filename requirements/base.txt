@@ -24,6 +24,7 @@ geopy==1.21.0
 
 # Django REST Framework
 djangorestframework==3.11.0  # https://github.com/encode/django-rest-framework
+djangorestframework-jwt # https://jpadilla.github.io/django-rest-framework-jwt/
 django-cors-headers==3.3.0 # https://github.com/adamchainz/django-cors-headers
 coreapi==2.3.3  # https://github.com/core-api/python-client
 
