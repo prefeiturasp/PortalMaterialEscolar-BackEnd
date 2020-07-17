@@ -15,6 +15,7 @@ pipeline {
   stages {
     stage('CheckOut') {
         steps {
+	  step([$class: 'GitHubSetCommitStatusBuilder'])	
           checkout scm  
         }
       }
@@ -216,18 +217,22 @@ post {
           echo 'One way or another, I have finished'
         }
         success {
+	  step([$class: 'GitHubCommitStatusSetter'])	
           telegramSend("${JOB_NAME}...O Build ${BUILD_DISPLAY_NAME} - Esta ok !!!\n Consulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)\n\n Uma nova versão da aplicação esta disponivel!!!")
         }
         unstable {
+	  step([$class: 'GitHubCommitStatusSetter']) 	
           telegramSend("O Build ${BUILD_DISPLAY_NAME} <${env.BUILD_URL}> - Esta instavel ...\nConsulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)")
         }
         failure {
+	  step([$class: 'GitHubCommitStatusSetter'])	
           telegramSend("${JOB_NAME}...O Build ${BUILD_DISPLAY_NAME}  - Quebrou. \nConsulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)")
         }
         changed {
           echo 'Things were different before...'
         }
         aborted {
+	  step([$class: 'GitHubCommitStatusSetter'])	
           telegramSend("O Build ${BUILD_DISPLAY_NAME} - Foi abortado.\nConsulte o log para detalhes -> [Job logs](${env.BUILD_URL}console)")
         }
     }

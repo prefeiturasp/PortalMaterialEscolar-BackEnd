@@ -96,6 +96,24 @@ class Proponente(ModeloBase):
         blank=True
     )
 
+    end_complemento = models.CharField(
+        'complemento',
+        max_length=100,
+        blank=True
+    )
+
+    end_numero = models.CharField(
+        'número',
+        max_length=20,
+        blank=True
+    )
+
+    end_bairro = models.CharField(
+        'bairro',
+        max_length=100,
+        blank=True
+    )
+
     end_cidade = models.CharField(
         'cidade',
         max_length=80,
@@ -144,7 +162,7 @@ class Proponente(ModeloBase):
             log.info(f'Enviando confirmação de pré-cadastro (Protocolo:{self.protocolo}) enviada para {self.email}.')
 
             env = environ.Env()
-            url = f'https://{env("SERVER_NAME")}/cadastro?uuid={self.uuid}'
+            url = f'https://{env("SERVER_NAME")}/fornecedor/cadastro?uuid={self.uuid}'
             enviar_email_confirmacao_pre_cadastro.delay(self.email,
                                                         {'protocolo': self.protocolo, 'url_cadastro': url})
 

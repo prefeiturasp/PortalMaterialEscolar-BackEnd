@@ -1,3 +1,4 @@
+[![Build Status](http://jenkins.sme.prefeitura.sp.gov.br/buildStatus/icon?job=PortalMaterialEscolar-BackEnd%2Fmaster)](http://jenkins.sme.prefeitura.sp.gov.br/view/Portal_Material_Escolar/job/PortalMaterialEscolar-BackEnd/job/master/)
 # SME-PortalMaterialEscolar-BackEnd-BackEnd
 ========
 
