@@ -12,7 +12,6 @@ from auditlog.registry import auditlog
 from sme_material_apps.core.helpers.validar_email import email_valido
 from sme_material_apps.core.models_abstracts import ModeloBase
 
-
 from ..tasks import (enviar_email_confirmacao_cadastro,
                      enviar_email_confirmacao_pre_cadastro)
 from .tipo_documento import TipoDocumento
@@ -198,7 +197,7 @@ class Proponente(ModeloBase):
     @classmethod
     def documentos_obrigatorios_enviados(cls, proponente):
         """Valida se os documentos obrigatórios foram enviados."""
-        tipos_obrigatorios = TipoDocumento.objects.filter(obrigatorio=True)
+        tipos_obrigatorios = TipoDocumento.objects.filter(obrigatorio=True, visivel=True)
         anexos_obrigatorios = proponente.anexos.filter(tipo_documento__obrigatorio=True)
 
         return tipos_obrigatorios.count() == anexos_obrigatorios.count()
