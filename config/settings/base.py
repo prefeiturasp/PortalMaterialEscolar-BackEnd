@@ -90,6 +90,7 @@ THIRD_PARTY_APPS = [
     "rest_framework_swagger",
     "django_use_email_as_username",
     "django_filters",
+    "multiselectfield",
 ]
 
 LOCAL_APPS = [
