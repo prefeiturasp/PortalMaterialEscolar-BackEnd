@@ -16,3 +16,4 @@ class Material(ModeloBase):
     class Meta:
         verbose_name = "Item de Material"
         verbose_name_plural = "Itens de Materiais"
+        ordering = ('nome',)
