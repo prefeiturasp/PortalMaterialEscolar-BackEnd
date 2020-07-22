@@ -178,6 +178,95 @@ class Proponente(ModeloBase):
     def arquivos_anexos(self):
         return self.anexos.all()
 
+    @property
+    def tem_kit_emei_completo(self):
+        return self.ofertas_de_materiais.filter(
+            material__nome='Agenda Educação Infantil').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Apontador').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Borracha').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caderno de desenho 96 Fls.').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caneta hidrográfica (12 cores)').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Cola Branca').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Giz de cera grosso Educação Infantil (12 cores)').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Lápis de cor (12 cores)').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Lápis grafite').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Massa pra modelar').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Tesoura').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Tinta guache').exists()
+
+    @property
+    def tem_kit_ciclo_alfabetizacao_completo(self):
+        return self.ofertas_de_materiais.filter(
+            material__nome='Agenda Ensino Fundamental').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Apontador').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Borracha').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caderno brochurão 80 Fls.').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caderno de desenho 96 Fls.').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caneta hidrográfica (12 cores)').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Cola Branca').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Estojo escolar').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Giz de cera Ensino Fundamental (12 cores)').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Lápis de cor (12 cores)').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Lápis grafite').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Tesoura').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Régua').exists()
+
+    @property
+    def tem_kit_ciclo_interdisciplinar_completo(self):
+        return self.ofertas_de_materiais.filter(
+            material__nome='Agenda Ensino Fundamental').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Apontador').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Borracha').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caderno universitário 96 Fls.').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caderno de desenho 96 Fls.').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caneta hidrográfica (12 cores)').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Cola Branca').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Estojo escolar').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Giz de cera Ensino Fundamental (12 cores)').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Lápis de cor (12 cores)').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Lápis grafite').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Tesoura').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Régua').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caneta esferográfica azul').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caneta esferográfica preta').exists()
+
+    @property
+    def tem_kit_ciclo_autoral_completo(self):
+        return self.ofertas_de_materiais.filter(
+            material__nome='Apontador').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Borracha').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caderno universitário 200 Fls.').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caderno de desenho 96 Fls.').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caneta hidrográfica (12 cores)').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Cola Branca').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Lápis de cor (12 cores)').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Lápis grafite').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Tesoura').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Régua').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caneta esferográfica azul').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caneta esferográfica preta').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caneta esferográfica vermelha').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Esquadro 45º').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Esquadro 60º').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Transferidor 180º').exists()
+
+    @property
+    def tem_kit_medio_eja_mova_completo(self):
+        return self.ofertas_de_materiais.filter(
+            material__nome='Apontador').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Borracha').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caderno universitário 200 Fls.').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caderno de desenho 96 Fls.').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caneta hidrográfica (12 cores)').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Cola Branca').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Lápis de cor (12 cores)').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Lápis grafite').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Tesoura').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Régua').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caneta esferográfica azul').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caneta esferográfica preta').exists() and self.ofertas_de_materiais.filter(
+            material__nome='Caneta esferográfica vermelha').exists()
+
     @classmethod
     def cnpj_ja_cadastrado(cls, cnpj):
         return cls.objects.filter(cnpj=cnpj).exists()

@@ -3,7 +3,6 @@ import logging
 from rest_framework import serializers
 from rest_framework.exceptions import ValidationError
 
-# from ....core.models import Material
 from sme_material_apps.proponentes.services import atualiza_coordenadas_lojas
 from ...api.serializers.anexo_serializer import AnexoSerializer
 from ...api.serializers.loja_serializer import (LojaCreateSerializer,

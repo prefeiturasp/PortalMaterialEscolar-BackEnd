@@ -1,7 +1,10 @@
+import logging
 from django.db import models
 from multiselectfield import MultiSelectField
 
 from sme_material_apps.core.models_abstracts import ModeloBase
+
+log = logging.getLogger(__name__)
 
 
 class Material(ModeloBase):
@@ -46,6 +49,28 @@ class Material(ModeloBase):
     def __str__(self):
 
         return f'{self.nome}'
+
+    @classmethod
+    def categorias_to_json(cls):
+        result = []
+        for categoria in cls.CATEGORIA_CHOICES:
+            materiais = []
+            for material in cls.objects.filter(categoria=categoria[0]):
+                materiais.append(
+                    {
+                        "id": material.id,
+                        "nome": material.nome,
+                        "quantidade": material.quantidade,
+                        "descricao": material.__str__()
+                    }
+                )
+            choice = {
+                'id': categoria[0],
+                'nome': categoria[1],
+                'materiais': materiais
+            }
+            result.append(choice)
+        return result
 
     class Meta:
         verbose_name = "Item de Material"

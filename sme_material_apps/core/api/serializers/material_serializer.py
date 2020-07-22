@@ -4,7 +4,8 @@ from ...models import Material
 
 
 class MaterialSerializer(serializers.ModelSerializer):
-    categoria = fields.MultipleChoiceField(choices=Material.CATEGORIA_CHOICES)
+    # categoria = fields.MultipleChoiceField(choices=Material.CATEGORIA_CHOICES)
+    categoria = serializers.CharField(source='get_categoria_display')
 
     class Meta:
         model = Material
