@@ -1,5 +1,7 @@
 from django.db.models.expressions import RawSQL
-from rest_framework import mixins
+from requests import Response
+from rest_framework import mixins, status
+from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import GenericViewSet
 
@@ -37,3 +39,13 @@ class LojaViewSet(mixins.ListModelMixin, GenericViewSet):
                 loja.distancia = loja.get_distancia(lat, lon)
 
             return queryset
+
+    @action(detail=False, methods=['post'], url_path='lojas')
+    def lojas(self, request):
+        queryset = self.get_queryset()
+        if request.data.get('tipo_busca', None) == 'kit':
+            if request.data.get('kit') == 'EMEI':
+                queryset = queryset.filter(
+                    proponente__ofertas_de_materiais__material__nome='Agenda Educação Infantil'
+                )
+        return Response(self.get_serializer(queryset, many=True).data, status=status.HTTP_200_OK)
