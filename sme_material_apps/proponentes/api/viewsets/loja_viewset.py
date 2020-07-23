@@ -41,11 +41,91 @@ class LojaViewSet(mixins.ListModelMixin, GenericViewSet):
         if request.data.get('tipo_busca', None) == 'kits':
             if request.data.get('kit') == 'EMEI':
                 queryset = queryset.filter(
-                    proponente__ofertas_de_materiais__material__nome='Agenda Educação Infantil'
-                )
+                    proponente__ofertas_de_materiais__material__nome='Agenda Educação Infantil').filter(
+                    proponente__ofertas_de_materiais__material__nome='Apontador').filter(
+                    proponente__ofertas_de_materiais__material__nome='Borracha').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caderno de desenho 96 Fls.').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caneta hidrográfica (12 cores)').filter(
+                    proponente__ofertas_de_materiais__material__nome='Cola Branca').filter(
+                    proponente__ofertas_de_materiais__material__nome='Giz de cera grosso Educação Infantil (12 cores)').filter(
+                    proponente__ofertas_de_materiais__material__nome='Lápis de cor (12 cores)').filter(
+                    proponente__ofertas_de_materiais__material__nome='Lápis grafite').filter(
+                    proponente__ofertas_de_materiais__material__nome='Massa pra modelar').filter(
+                    proponente__ofertas_de_materiais__material__nome='Tesoura').filter(
+                    proponente__ofertas_de_materiais__material__nome='Tinta guache')
+
+            elif request.data.get('kit') == 'CICLO_ALFABETIZACAO':
+                queryset = queryset.filter(
+                    proponente__ofertas_de_materiais__material__nome='Agenda Educação Infantil').filter(
+                    proponente__ofertas_de_materiais__material__nome='Apontador').filter(
+                    proponente__ofertas_de_materiais__material__nome='Borracha').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caderno brochurão 80 Fls.').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caderno de desenho 96 Fls.').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caneta hidrográfica (12 cores)').filter(
+                    proponente__ofertas_de_materiais__material__nome='Cola Branca').filter(
+                    proponente__ofertas_de_materiais__material__nome='Estojo escolar').filter(
+                    proponente__ofertas_de_materiais__material__nome='Giz de cera Ensino Fundamental (12 cores)').filter(
+                    proponente__ofertas_de_materiais__material__nome='Lápis de cor (12 cores)').filter(
+                    proponente__ofertas_de_materiais__material__nome='Lápis grafite').filter(
+                    proponente__ofertas_de_materiais__material__nome='Tesoura').filter(
+                    proponente__ofertas_de_materiais__material__nome='Régua')
+
+            elif request.data.get('kit') == 'CICLO_INTERDISCIPLINAR':
+                queryset = queryset.filter(
+                    proponente__ofertas_de_materiais__material__nome='Agenda Educação Infantil').filter(
+                    proponente__ofertas_de_materiais__material__nome='Apontador').filter(
+                    proponente__ofertas_de_materiais__material__nome='Borracha').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caderno universitário 96 Fls.').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caderno de desenho 96 Fls.').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caneta hidrográfica (12 cores)').filter(
+                    proponente__ofertas_de_materiais__material__nome='Cola Branca').filter(
+                    proponente__ofertas_de_materiais__material__nome='Estojo escolar').filter(
+                    proponente__ofertas_de_materiais__material__nome='Giz de cera Ensino Fundamental (12 cores)').filter(
+                    proponente__ofertas_de_materiais__material__nome='Lápis de cor (12 cores)').filter(
+                    proponente__ofertas_de_materiais__material__nome='Lápis grafite').filter(
+                    proponente__ofertas_de_materiais__material__nome='Tesoura').filter(
+                    proponente__ofertas_de_materiais__material__nome='Régua').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caneta esferográfica azul').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caneta esferográfica preta')
+
+            elif request.data.get('kit') == 'CICLO_ALTORAL':
+                queryset = queryset.filter(
+                    proponente__ofertas_de_materiais__material__nome='Apontador').filter(
+                    proponente__ofertas_de_materiais__material__nome='Borracha').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caderno universitário 200 Fls.').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caderno de desenho 96 Fls.').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caneta hidrográfica (12 cores)').filter(
+                    proponente__ofertas_de_materiais__material__nome='Cola Branca').filter(
+                    proponente__ofertas_de_materiais__material__nome='Lápis de cor (12 cores)').filter(
+                    proponente__ofertas_de_materiais__material__nome='Lápis grafite').filter(
+                    proponente__ofertas_de_materiais__material__nome='Tesoura').filter(
+                    proponente__ofertas_de_materiais__material__nome='Régua').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caneta esferográfica azul').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caneta esferográfica preta').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caneta esferográfica vermelha').filter(
+                    proponente__ofertas_de_materiais__material__nome='Esquadro 45º').filter(
+                    proponente__ofertas_de_materiais__material__nome='Esquadro 60º').filter(
+                    proponente__ofertas_de_materiais__material__nome='Transferidor 180º')
+
+            elif request.data.get('kit') == 'MEDIO_EJA_MOVA':
+                queryset = queryset.filter(
+                    proponente__ofertas_de_materiais__material__nome='Apontador').filter(
+                    proponente__ofertas_de_materiais__material__nome='Borracha').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caderno universitário 200 Fls.').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caderno de desenho 96 Fls.').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caneta hidrográfica (12 cores)').filter(
+                    proponente__ofertas_de_materiais__material__nome='Cola Branca').filter(
+                    proponente__ofertas_de_materiais__material__nome='Lápis de cor (12 cores)').filter(
+                    proponente__ofertas_de_materiais__material__nome='Lápis grafite').filter(
+                    proponente__ofertas_de_materiais__material__nome='Tesoura').filter(
+                    proponente__ofertas_de_materiais__material__nome='Régua').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caneta esferográfica azul').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caneta esferográfica preta').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caneta esferográfica vermelha')
+
         return Response(
             LojaCredenciadaSerializer(
                 queryset,
-                context={'latitude': latitude, 'longitude': longitude},
+                context={'latitude': latitude, 'longitude': longitude, 'request': request},
                 many=True).data,
             status=status.HTTP_200_OK)
