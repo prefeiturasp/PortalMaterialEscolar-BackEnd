@@ -147,10 +147,17 @@ class ProponenteOfertaMaterialSerializer(serializers.ModelSerializer):
 class LojaCredenciadaSerializer(serializers.ModelSerializer):
     proponente = ProponenteOfertaMaterialSerializer(many=False)
     email = serializers.SerializerMethodField()
-    distancia = serializers.DecimalField(max_digits=4, decimal_places=1)
+    distancia = serializers.SerializerMethodField()
 
     def get_email(self, obj):
         return obj.proponente.email
+
+    def get_distancia(self, obj):
+        if obj.latitude and obj.longitude:
+            lat = self.context.get('latitude')
+            lon = self.context.get('longitude')
+            return round(obj.get_distancia(lat, lon), 2)
+        return None
 
     class Meta:
         model = Loja
