@@ -7,7 +7,7 @@ from ....core.models.material import Material
 
 class OfertaDeMaterialSerializer(serializers.ModelSerializer):
     material = MaterialSerializer()
-    material_categoria = serializers.SerializerMethodField()
+    # material_categoria = serializers.SerializerMethodField()
 
     def get_material_categoria(self, obj):
         return obj.material.categoria
@@ -30,7 +30,7 @@ class OfertaDeMaterialCreateSerializer(serializers.ModelSerializer):
 
 
 class OfertaDeMaterialLookupSerializer(serializers.ModelSerializer):
-    material_categoria = serializers.SerializerMethodField()
+    # material_categoria = serializers.SerializerMethodField()
     item = serializers.SlugRelatedField(
         slug_field='nome',
         required=False,
