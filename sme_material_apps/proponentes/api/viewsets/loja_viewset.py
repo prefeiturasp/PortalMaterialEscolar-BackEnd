@@ -123,6 +123,10 @@ class LojaViewSet(mixins.ListModelMixin, GenericViewSet):
                     proponente__ofertas_de_materiais__material__nome='Caneta esferográfica preta').filter(
                     proponente__ofertas_de_materiais__material__nome='Caneta esferográfica vermelha')
 
+        elif request.data.get('tipo_busca', None) == 'itens':
+            queryset = queryset.filter(
+                proponente__ofertas_de_materiais__material__nome__in=request.data.get('materiais')).distinct()
+
         return Response(
             LojaCredenciadaSerializer(
                 queryset,
