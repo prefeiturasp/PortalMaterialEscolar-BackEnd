@@ -9,4 +9,4 @@ class KitSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Kit
-        fields = ('id', 'nome', 'materiais_do_kit')
+        fields = ('id', 'nome', 'materiais_do_kit', 'ativo')
