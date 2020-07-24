@@ -2,11 +2,11 @@ from django.db import models
 
 from sme_material_apps.core.models_abstracts import ModeloBase
 from ..models.material import Material
-from ..models.kit import Kits
+from ..models.kit import Kit
 
 
 class MaterialKit(ModeloBase):
-    kit = models.ForeignKey(Kits, on_delete=models.CASCADE, related_name='materiais_do_kit')
+    kit = models.ForeignKey(Kit, on_delete=models.CASCADE, related_name='materiais_do_kit')
     material = models.ForeignKey(Material, on_delete=models.CASCADE, related_name='kit_do_material')
     unidades = models.PositiveSmallIntegerField(default=1)
 

@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from .models import Parametros, Material, Kits, MaterialKit
+from .models import Parametros, Material, Kit, MaterialKit
 
 
 class MateriaisFornecidosInLine(admin.TabularInline):
@@ -8,7 +8,7 @@ class MateriaisFornecidosInLine(admin.TabularInline):
     extra = 1  # Quantidade de linhas que serão exibidas.
 
 
-@admin.register(Kits)
+@admin.register(Kit)
 class KitAdmin(admin.ModelAdmin):
     @staticmethod
     def qtd_itens(kit):

@@ -3,7 +3,7 @@ from django.db import models
 from sme_material_apps.core.models_abstracts import ModeloBase
 
 
-class Kits(ModeloBase):
+class Kit(ModeloBase):
     nome = models.CharField('Nome do kit', unique=True, max_length=150)
 
     def __str__(self):
