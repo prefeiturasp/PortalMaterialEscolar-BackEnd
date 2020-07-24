@@ -44,15 +44,15 @@ class LojaViewSet(mixins.ListModelMixin, GenericViewSet):
                     proponente__ofertas_de_materiais__material__nome='Agenda Educação Infantil').filter(
                     proponente__ofertas_de_materiais__material__nome='Apontador').filter(
                     proponente__ofertas_de_materiais__material__nome='Borracha').filter(
-                    proponente__ofertas_de_materiais__material__nome='Caderno de desenho 96 Fls.').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caderno desenho 96 Fls.').filter(
                     proponente__ofertas_de_materiais__material__nome='Caneta hidrográfica (12 cores)').filter(
-                    proponente__ofertas_de_materiais__material__nome='Cola Branca').filter(
+                    proponente__ofertas_de_materiais__material__nome='Cola branca').filter(
                     proponente__ofertas_de_materiais__material__nome='Giz de cera grosso Educação Infantil (12 cores)').filter(
                     proponente__ofertas_de_materiais__material__nome='Lápis de cor (12 cores)').filter(
                     proponente__ofertas_de_materiais__material__nome='Lápis grafite').filter(
-                    proponente__ofertas_de_materiais__material__nome='Massa pra modelar').filter(
+                    proponente__ofertas_de_materiais__material__nome='Massa para modelar (06 cores)').filter(
                     proponente__ofertas_de_materiais__material__nome='Tesoura').filter(
-                    proponente__ofertas_de_materiais__material__nome='Tinta guache')
+                    proponente__ofertas_de_materiais__material__nome='Tinta guache (06 cores)')
 
             elif request.data.get('kit') == 'CICLO_ALFABETIZACAO':
                 queryset = queryset.filter(
@@ -60,9 +60,9 @@ class LojaViewSet(mixins.ListModelMixin, GenericViewSet):
                     proponente__ofertas_de_materiais__material__nome='Apontador').filter(
                     proponente__ofertas_de_materiais__material__nome='Borracha').filter(
                     proponente__ofertas_de_materiais__material__nome='Caderno brochurão 80 Fls.').filter(
-                    proponente__ofertas_de_materiais__material__nome='Caderno de desenho 96 Fls.').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caderno desenho 96 Fls.').filter(
                     proponente__ofertas_de_materiais__material__nome='Caneta hidrográfica (12 cores)').filter(
-                    proponente__ofertas_de_materiais__material__nome='Cola Branca').filter(
+                    proponente__ofertas_de_materiais__material__nome='Cola branca').filter(
                     proponente__ofertas_de_materiais__material__nome='Estojo escolar').filter(
                     proponente__ofertas_de_materiais__material__nome='Giz de cera Ensino Fundamental (12 cores)').filter(
                     proponente__ofertas_de_materiais__material__nome='Lápis de cor (12 cores)').filter(
@@ -76,9 +76,9 @@ class LojaViewSet(mixins.ListModelMixin, GenericViewSet):
                     proponente__ofertas_de_materiais__material__nome='Apontador').filter(
                     proponente__ofertas_de_materiais__material__nome='Borracha').filter(
                     proponente__ofertas_de_materiais__material__nome='Caderno universitário 96 Fls.').filter(
-                    proponente__ofertas_de_materiais__material__nome='Caderno de desenho 96 Fls.').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caderno desenho 96 Fls.').filter(
                     proponente__ofertas_de_materiais__material__nome='Caneta hidrográfica (12 cores)').filter(
-                    proponente__ofertas_de_materiais__material__nome='Cola Branca').filter(
+                    proponente__ofertas_de_materiais__material__nome='Cola branca').filter(
                     proponente__ofertas_de_materiais__material__nome='Estojo escolar').filter(
                     proponente__ofertas_de_materiais__material__nome='Giz de cera Ensino Fundamental (12 cores)').filter(
                     proponente__ofertas_de_materiais__material__nome='Lápis de cor (12 cores)').filter(
@@ -93,9 +93,9 @@ class LojaViewSet(mixins.ListModelMixin, GenericViewSet):
                     proponente__ofertas_de_materiais__material__nome='Apontador').filter(
                     proponente__ofertas_de_materiais__material__nome='Borracha').filter(
                     proponente__ofertas_de_materiais__material__nome='Caderno universitário 200 Fls.').filter(
-                    proponente__ofertas_de_materiais__material__nome='Caderno de desenho 96 Fls.').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caderno desenho 96 Fls.').filter(
                     proponente__ofertas_de_materiais__material__nome='Caneta hidrográfica (12 cores)').filter(
-                    proponente__ofertas_de_materiais__material__nome='Cola Branca').filter(
+                    proponente__ofertas_de_materiais__material__nome='Cola branca').filter(
                     proponente__ofertas_de_materiais__material__nome='Lápis de cor (12 cores)').filter(
                     proponente__ofertas_de_materiais__material__nome='Lápis grafite').filter(
                     proponente__ofertas_de_materiais__material__nome='Tesoura').filter(
@@ -112,9 +112,9 @@ class LojaViewSet(mixins.ListModelMixin, GenericViewSet):
                     proponente__ofertas_de_materiais__material__nome='Apontador').filter(
                     proponente__ofertas_de_materiais__material__nome='Borracha').filter(
                     proponente__ofertas_de_materiais__material__nome='Caderno universitário 200 Fls.').filter(
-                    proponente__ofertas_de_materiais__material__nome='Caderno de desenho 96 Fls.').filter(
+                    proponente__ofertas_de_materiais__material__nome='Caderno desenho 96 Fls.').filter(
                     proponente__ofertas_de_materiais__material__nome='Caneta hidrográfica (12 cores)').filter(
-                    proponente__ofertas_de_materiais__material__nome='Cola Branca').filter(
+                    proponente__ofertas_de_materiais__material__nome='Cola branca').filter(
                     proponente__ofertas_de_materiais__material__nome='Lápis de cor (12 cores)').filter(
                     proponente__ofertas_de_materiais__material__nome='Lápis grafite').filter(
                     proponente__ofertas_de_materiais__material__nome='Tesoura').filter(
