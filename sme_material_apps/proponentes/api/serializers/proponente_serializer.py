@@ -31,47 +31,6 @@ class ProponenteCreateSerializer(serializers.ModelSerializer):
     ofertas_de_materiais = OfertaDeMaterialCreateSerializer(many=True)
     lojas = LojaCreateSerializer(many=True)
 
-    # @staticmethod
-    # def categoria_acima_limite(ofertas_de_materiais):
-    #     limites_por_categoria = LimiteCategoria.limites_por_categoria_as_dict()
-    #
-    #     if not limites_por_categoria:
-    #         return None
-    #
-    #     # Inicializa totais por categoria
-    #     total_por_categoria = {categoria: 0 for categoria in limites_por_categoria.keys()}
-    #
-    #     # Sumariza ofertas por categoria
-    #     for oferta in ofertas_de_materiais:
-    #         total_por_categoria[oferta['material'].categoria] += (oferta['preco'] * oferta['material'].quantidade)
-    #
-    #     # Encontra e retorna a primeira categoria que ficou acima do limite ou None se nenhuma ficou acima
-    #     categoria_acima_do_limite = None
-    #     for categoria in total_por_categoria.keys():
-    #         if total_por_categoria[categoria] > limites_por_categoria[categoria]:
-    #             categoria_acima_do_limite = {'categoria': categoria, 'limite': limites_por_categoria[categoria]}
-    #             break
-    #
-    #     return categoria_acima_do_limite
-    #
-    # @staticmethod
-    # def categoria_faltando_itens(ofertas_de_materiais):
-    #     qtd_itens_por_categoria = Material.qtd_itens_por_categoria_as_dict()
-    #
-    #     categorias_fornecidas = set()
-    #
-    #     for oferta in ofertas_de_materiais:
-    #         categorias_fornecidas.add(oferta['material'].categoria)
-    #         qtd_itens_por_categoria[oferta['material'].categoria] -= 1
-    #
-    #     categoria_faltando_itens = None
-    #     for categoria, quantidade in qtd_itens_por_categoria.items():
-    #         # Não é obrigatorio fornecer todas as categorias, mas todos os itens das categorias fornecidas
-    #         if quantidade > 0 and categoria in categorias_fornecidas:
-    #             categoria_faltando_itens = categoria
-    #             break
-    #     return categoria_faltando_itens
-
     def create(self, validated_data):
         ofertas_de_materiais = validated_data.pop('ofertas_de_materiais')
         lojas = validated_data.pop('lojas')
@@ -87,22 +46,6 @@ class ProponenteCreateSerializer(serializers.ModelSerializer):
             msgError = "Pelo menos uma loja precisa ser enviada!"
             log.info(msgError)
             raise ValidationError(msgError)
-
-        # categoria_acima_limite = self.categoria_acima_limite(ofertas_de_materiais)
-        # log.info("Categoria acima do limite: {}".format(categoria_acima_limite))
-        # if categoria_acima_limite:
-        #     log.info("Categoria acima do limite!")
-        #     raise ValidationError(
-        #         f'Valor total da categoria {Material.CATEGORIA_NOMES[categoria_acima_limite["categoria"]]} '
-        #         f'está acima do limite de R$ {categoria_acima_limite["limite"]:.2f}.')
-        #
-        # categoria_faltando_itens = self.categoria_faltando_itens(ofertas_de_materiais)
-        # log.info("Categoria faltando itens: {}".format(categoria_acima_limite))
-        # if categoria_faltando_itens:
-        #     log.info("Categoria com itens faltando!")
-        #     raise ValidationError(
-        #         f'Não foram fornecidos todos os itens da categoria {Material.CATEGORIA_NOMES[categoria_faltando_itens]}'
-        #         f'. Não é permitido o fornecimento parcial de uma categoria.')
 
         proponente = Proponente.objects.create(**validated_data)
         log.info("Criando proponente com uuid: {}".format(proponente.uuid))
