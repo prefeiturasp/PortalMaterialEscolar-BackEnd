@@ -14,7 +14,7 @@ class KitAdmin(admin.ModelAdmin):
     def qtd_itens(kit):
         return kit.materiais_do_kit.count()
 
-    list_display = ('nome', 'qtd_itens',)
+    list_display = ('nome', 'ativo', 'qtd_itens',)
     ordering = ('nome',)
     search_fields = ('nome',)
     inlines = [MateriaisFornecidosInLine]
