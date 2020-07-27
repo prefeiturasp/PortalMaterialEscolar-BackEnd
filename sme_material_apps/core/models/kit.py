@@ -17,3 +17,4 @@ class Kit(ModeloBase):
     class Meta:
         verbose_name = "Kit"
         verbose_name_plural = "Kits"
+        ordering = ('nome',)
