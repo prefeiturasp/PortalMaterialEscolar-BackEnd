@@ -77,6 +77,26 @@ class ProponenteAdmin(admin.ModelAdmin):
     ultima_alteracao.admin_order_field = 'alterado_em'
     ultima_alteracao.short_description = 'Última alteração'
 
+    def tem_kit_emei_completo(self, obj):
+        return obj.tem_kit_emei_completo
+    tem_kit_emei_completo.boolean = True
+
+    def tem_kit_alfabetizacao_completo(self, obj):
+        return obj.tem_kit_ciclo_alfabetizacao_completo
+    tem_kit_alfabetizacao_completo.boolean = True
+
+    def tem_kit_interdisciplinar_completo(self, obj):
+        return obj.tem_kit_ciclo_interdisciplinar_completo
+    tem_kit_interdisciplinar_completo.boolean = True
+
+    def tem_kit_autoral_completo(self, obj):
+        return obj.tem_kit_ciclo_autoral_completo
+    tem_kit_autoral_completo.boolean = True
+
+    def tem_kit_ensino_medio_completo(self, obj):
+        return obj.tem_kit_medio_eja_mova_completo
+    tem_kit_ensino_medio_completo.boolean = True
+
     actions = [
         'verifica_bloqueio_cnpj',
         'muda_status_para_aprovado',
@@ -87,8 +107,9 @@ class ProponenteAdmin(admin.ModelAdmin):
         'muda_status_para_em_processo',
         'muda_status_para_credenciado',
         'atualiza_coordenadas_action']
-    list_display = ('protocolo', 'cnpj', 'razao_social', 'responsavel', 'telefone', 'email', 'ultima_alteracao',
-                    'status')
+    list_display = ('protocolo', 'cnpj', 'razao_social', 'responsavel', 'telefone', 'email', 'status', 'ultima_alteracao',
+                    'tem_kit_emei_completo', 'tem_kit_alfabetizacao_completo', 'tem_kit_interdisciplinar_completo',
+                    'tem_kit_autoral_completo', 'tem_kit_ensino_medio_completo')
     ordering = ('-alterado_em',)
     search_fields = ('uuid', 'cnpj', 'razao_social', 'responsavel')
     list_filter = ('status',)
