@@ -107,14 +107,14 @@ class ProponenteAdmin(admin.ModelAdmin):
         'muda_status_para_em_processo',
         'muda_status_para_credenciado',
         'atualiza_coordenadas_action']
-    list_display = ('protocolo', 'cnpj', 'razao_social', 'responsavel', 'telefone', 'email', 'status', 'ultima_alteracao',
-                    'tem_kit_emei_completo', 'tem_kit_alfabetizacao_completo', 'tem_kit_interdisciplinar_completo',
-                    'tem_kit_autoral_completo', 'tem_kit_ensino_medio_completo')
+    list_display = ('protocolo', 'cnpj', 'razao_social', 'responsavel', 'telefone', 'email', 'status',
+                    'ultima_alteracao')
     ordering = ('-alterado_em',)
     search_fields = ('uuid', 'cnpj', 'razao_social', 'responsavel')
     list_filter = ('status',)
     inlines = [MateriaisFornecidosInLine, LojasInLine, AnexosInLine]
-    readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social')
+    readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social', 'tem_kit_emei_completo', 'tem_kit_alfabetizacao_completo',
+                       'tem_kit_interdisciplinar_completo', 'tem_kit_autoral_completo', 'tem_kit_ensino_medio_completo')
 
 
 @admin.register(OfertaDeMaterial)
