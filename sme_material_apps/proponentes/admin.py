@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-#
+from django.contrib import messages
 from .models import (Proponente, OfertaDeMaterial, Loja, Anexo, TipoDocumento)
 from .services import muda_status_de_proponentes, atualiza_coordenadas
 
@@ -121,6 +121,12 @@ class LojaAdmin(admin.ModelAdmin):
         return f'<img src="{foto.url}" width="64px"/>' if foto else ""
 
     fachada.allow_tags = True
+
+    def save_model(self, request, obj, form, change):
+        if not obj.latitude:
+            messages.add_message(request, messages.WARNING, 'Ao cadastrar uma loja nova é necessário atualizar as '
+                                                            'coordenadas no cadastro do proponente.')
+        super(LojaAdmin, self).save_model(request, obj, form, change)
 
     list_display = ('protocolo', 'nome_fantasia', 'fachada', 'cep', 'endereco', 'numero', 'complemento', 'bairro')
     ordering = ('nome_fantasia',)
