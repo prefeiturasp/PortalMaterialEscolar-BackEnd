@@ -181,60 +181,38 @@ class Proponente(ModeloBase):
 
     @property
     def tem_kit_emei_completo(self):
-        kit = Kit.objects.get(nome='Kit Infantil (EMEI - Infantil I e II)')
+        kit = Kit.objects.get(nome='Kit Educação Infantil (Infantil I e II - EMEI)')
         materiais = [m.material.nome for m in kit.materiais_do_kit.all()]
-        for material in materiais:
-            if not self.ofertas_de_materiais.filter(
-                material__nome=material
-            ).exists():
-                return False
-        return True
-
-
+        materiais_kit = [m.material.nome for m in self.ofertas_de_materiais.all()]
+        return all(material in materiais_kit for material in materiais)
 
     @property
     def tem_kit_ciclo_alfabetizacao_completo(self):
         kit = Kit.objects.get(nome='Kit Ensino Fundamental - Ciclo de Alfabetização (1º ao 3º ano)')
         materiais = [m.material.nome for m in kit.materiais_do_kit.all()]
-        for material in materiais:
-            if not self.ofertas_de_materiais.filter(
-                material__nome=material
-            ).exists():
-                return False
-        return True
+        materiais_kit = [m.material.nome for m in self.ofertas_de_materiais.all()]
+        return all(material in materiais_kit for material in materiais)
 
     @property
     def tem_kit_ciclo_interdisciplinar_completo(self):
         kit = Kit.objects.get(nome='Kit Ensino Fundamental - Ciclo Interdisciplinar (4º ao 6º ano)')
         materiais = [m.material.nome for m in kit.materiais_do_kit.all()]
-        for material in materiais:
-            if not self.ofertas_de_materiais.filter(
-                material__nome=material
-            ).exists():
-                return False
-        return True
+        materiais_kit = [m.material.nome for m in self.ofertas_de_materiais.all()]
+        return all(material in materiais_kit for material in materiais)
 
     @property
     def tem_kit_ciclo_autoral_completo(self):
         kit = Kit.objects.get(nome='Kit Ensino Fundamental - Ciclo Autoral (7º ao 9º ano)')
         materiais = [m.material.nome for m in kit.materiais_do_kit.all()]
-        for material in materiais:
-            if not self.ofertas_de_materiais.filter(
-                material__nome=material
-            ).exists():
-                return False
-        return True
+        materiais_kit = [m.material.nome for m in self.ofertas_de_materiais.all()]
+        return all(material in materiais_kit for material in materiais)
 
     @property
     def tem_kit_medio_eja_mova_completo(self):
         kit = Kit.objects.get(nome='Kit Ensino Médio/EJA e MOVA')
         materiais = [m.material.nome for m in kit.materiais_do_kit.all()]
-        for material in materiais:
-            if not self.ofertas_de_materiais.filter(
-                material__nome=material
-            ).exists():
-                return False
-        return True
+        materiais_kit = [m.material.nome for m in self.ofertas_de_materiais.all()]
+        return all(material in materiais_kit for material in materiais)
 
     @classmethod
     def cnpj_ja_cadastrado(cls, cnpj):
