@@ -1,6 +1,6 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
-#
+from django.contrib import messages
 from .models import (Proponente, OfertaDeMaterial, Loja, Anexo, TipoDocumento)
 from .services import muda_status_de_proponentes, atualiza_coordenadas
 
@@ -77,6 +77,26 @@ class ProponenteAdmin(admin.ModelAdmin):
     ultima_alteracao.admin_order_field = 'alterado_em'
     ultima_alteracao.short_description = 'Última alteração'
 
+    def tem_kit_emei_completo(self, obj):
+        return obj.tem_kit_emei_completo
+    tem_kit_emei_completo.boolean = True
+
+    def tem_kit_alfabetizacao_completo(self, obj):
+        return obj.tem_kit_ciclo_alfabetizacao_completo
+    tem_kit_alfabetizacao_completo.boolean = True
+
+    def tem_kit_interdisciplinar_completo(self, obj):
+        return obj.tem_kit_ciclo_interdisciplinar_completo
+    tem_kit_interdisciplinar_completo.boolean = True
+
+    def tem_kit_autoral_completo(self, obj):
+        return obj.tem_kit_ciclo_autoral_completo
+    tem_kit_autoral_completo.boolean = True
+
+    def tem_kit_ensino_medio_completo(self, obj):
+        return obj.tem_kit_medio_eja_mova_completo
+    tem_kit_ensino_medio_completo.boolean = True
+
     actions = [
         'verifica_bloqueio_cnpj',
         'muda_status_para_aprovado',
@@ -87,13 +107,14 @@ class ProponenteAdmin(admin.ModelAdmin):
         'muda_status_para_em_processo',
         'muda_status_para_credenciado',
         'atualiza_coordenadas_action']
-    list_display = ('protocolo', 'cnpj', 'razao_social', 'responsavel', 'telefone', 'email', 'ultima_alteracao',
-                    'status')
+    list_display = ('protocolo', 'cnpj', 'razao_social', 'responsavel', 'telefone', 'email', 'status',
+                    'ultima_alteracao')
     ordering = ('-alterado_em',)
     search_fields = ('uuid', 'cnpj', 'razao_social', 'responsavel')
     list_filter = ('status',)
     inlines = [MateriaisFornecidosInLine, LojasInLine, AnexosInLine]
-    readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social')
+    readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social', 'tem_kit_emei_completo', 'tem_kit_alfabetizacao_completo',
+                       'tem_kit_interdisciplinar_completo', 'tem_kit_autoral_completo', 'tem_kit_ensino_medio_completo')
 
 
 @admin.register(OfertaDeMaterial)
@@ -121,6 +142,12 @@ class LojaAdmin(admin.ModelAdmin):
         return f'<img src="{foto.url}" width="64px"/>' if foto else ""
 
     fachada.allow_tags = True
+
+    def save_model(self, request, obj, form, change):
+        if not obj.latitude:
+            messages.add_message(request, messages.WARNING, 'Ao cadastrar uma loja nova é necessário atualizar as '
+                                                            'coordenadas no cadastro do proponente.')
+        super(LojaAdmin, self).save_model(request, obj, form, change)
 
     list_display = ('protocolo', 'nome_fantasia', 'fachada', 'cep', 'endereco', 'numero', 'complemento', 'bairro')
     ordering = ('nome_fantasia',)

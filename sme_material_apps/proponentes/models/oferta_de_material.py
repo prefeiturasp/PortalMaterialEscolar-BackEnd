@@ -24,6 +24,7 @@ class OfertaDeMaterial(ModeloBase):
         verbose_name = "oferta de material"
         verbose_name_plural = "ofertas de material"
         unique_together = ['proponente', 'material']
+        ordering = ('material',)
 
 # TODO Corrigir erro que da ao excluir um proponente quando o log da oferta de material está ativo
 # auditlog.register(OfertaDeMaterial)

@@ -8,7 +8,6 @@ from ....core.models.material import Material
 class OfertaDeMaterialSerializer(serializers.ModelSerializer):
     material = MaterialSerializer()
 
-
     class Meta:
         model = OfertaDeMaterial
         fields = '__all__'

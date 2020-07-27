@@ -7,11 +7,13 @@ from sme_material_apps.proponentes.urls import router as proponentes_router
 from .viewsets.edital_viewset import EditalViewSet
 from .viewsets.instrucao_normativa_viewset import InstrucaoNormativaViewSet
 from .viewsets.materiais_viewset import MateriaisViewSet
+from .viewsets.kits_viewset import KitsViewSet
 from .viewsets.version_viewset import ApiVersion
 
 router = routers.DefaultRouter()
 
 router.register('api-version', ApiVersion, basename='Version')
+router.register('kits', KitsViewSet)
 router.register('materiais', MateriaisViewSet)
 router.register('edital', EditalViewSet, basename='Edital')
 router.register('instrucao-normativa', InstrucaoNormativaViewSet, basename='InstrucaoNormativa')
