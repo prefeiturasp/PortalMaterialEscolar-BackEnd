@@ -97,6 +97,9 @@ class ProponenteAdmin(admin.ModelAdmin):
         return obj.tem_kit_medio_eja_mova_completo
     tem_kit_ensino_medio_completo.boolean = True
 
+    def kits_fornecidos(self, obj):
+        return ", ".join([str(k) for k in obj.kits.all()])
+
     actions = [
         'verifica_bloqueio_cnpj',
         'muda_status_para_aprovado',
@@ -108,7 +111,7 @@ class ProponenteAdmin(admin.ModelAdmin):
         'muda_status_para_credenciado',
         'atualiza_coordenadas_action']
     list_display = ('protocolo', 'cnpj', 'razao_social', 'responsavel', 'telefone', 'email', 'status',
-                    'ultima_alteracao')
+                    'ultima_alteracao', 'kits_fornecidos')
     ordering = ('-alterado_em',)
     search_fields = ('uuid', 'cnpj', 'razao_social', 'responsavel')
     list_filter = ('status',)
