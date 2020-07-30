@@ -7,6 +7,7 @@ from sme_material_apps.proponentes.services import atualiza_coordenadas_lojas
 from ...api.serializers.anexo_serializer import AnexoSerializer
 from ...api.serializers.loja_serializer import (LojaCreateSerializer,
                                                 LojaSerializer)
+from ....core.api.serializers.kit_serializer import KitLookupSerializer
 from ...api.serializers.oferta_de_material_serializer import (
     OfertaDeMaterialCreateSerializer, OfertaDeMaterialSerializer, OfertaDeMaterialLookupSerializer)
 from ...models import Proponente, Loja
@@ -20,6 +21,7 @@ class ProponenteSerializer(serializers.ModelSerializer):
     arquivos_anexos = serializers.ListField(
         child=AnexoSerializer()
     )
+    kits = KitLookupSerializer(read_only=True, many=True)
 
     class Meta:
         model = Proponente
