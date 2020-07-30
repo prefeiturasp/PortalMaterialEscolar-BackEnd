@@ -78,7 +78,10 @@ class ProponenteAdmin(admin.ModelAdmin):
     ultima_alteracao.short_description = 'Última alteração'
 
     def kits_fornecidos(self, obj):
-        return ", ".join([str(k) for k in obj.kits.all()])
+        lista_kits = '<ul>'
+        lista_kits += "\n".join(['<li>{}</li>'.format(str(k)) for k in obj.kits.all()])
+        lista_kits += '</ul>'
+        return mark_safe(lista_kits)
 
     actions = [
         'verifica_bloqueio_cnpj',
@@ -97,7 +100,7 @@ class ProponenteAdmin(admin.ModelAdmin):
     filter_horizontal = ('kits',)
     list_filter = ('status',)
     inlines = [MateriaisFornecidosInLine, LojasInLine, AnexosInLine]
-    readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social')
+    readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social', 'kits')
 
 
 @admin.register(OfertaDeMaterial)

@@ -1,6 +1,9 @@
+import logging
+
 from django_filters import rest_framework as filters
 from rest_framework import mixins, status
 from rest_framework.decorators import action
+from rest_framework.exceptions import ValidationError
 from rest_framework.filters import SearchFilter, OrderingFilter
 from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
@@ -10,6 +13,8 @@ from sme_material_apps.core.models import Material, Kit
 from ..serializers.proponente_serializer import ProponenteSerializer, ProponenteCreateSerializer
 
 from ...models import Proponente, OfertaDeMaterial
+
+log = logging.getLogger(__name__)
 
 
 class ProponentesViewSet(mixins.CreateModelMixin,
@@ -39,6 +44,12 @@ class ProponentesViewSet(mixins.CreateModelMixin,
     def tabela_precos(self, request, uuid):
         proponente = self.get_object()
         proponente.ofertas_de_materiais.all().delete()
+
+        if not request.data.get('ofertas_de_materiais'):
+            msgError = "Pelo menos uma oferta deve ser enviada!"
+            log.info(msgError)
+            raise ValidationError(msgError)
+
         for unidade_preco in request.data.get('ofertas_de_materiais'):
             material = Material.objects.get(nome=unidade_preco.get('nome'))
             oferta_de_material = OfertaDeMaterial(
@@ -54,6 +65,7 @@ class ProponentesViewSet(mixins.CreateModelMixin,
         for kit in request.data.get('kits'):
             kit_obj = Kit.objects.get(uuid=kit)
             proponente.kits.add(kit_obj)
+
         return Response(ProponenteSerializer(proponente).data, status=status.HTTP_200_OK)
 
     @action(detail=False, url_path='verifica-cnpj')
