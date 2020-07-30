@@ -7,7 +7,7 @@ from ..serializers.kit_serializer import (KitSerializer)
 
 
 class KitsViewSet(viewsets.ReadOnlyModelViewSet):
-    lookup_field = 'id'
+    lookup_field = "uuid"
     queryset = Kit.objects.all()
     serializer_class = KitSerializer
     permission_classes = [AllowAny]

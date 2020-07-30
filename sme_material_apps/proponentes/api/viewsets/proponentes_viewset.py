@@ -47,6 +47,12 @@ class ProponentesViewSet(mixins.CreateModelMixin,
                 preco=unidade_preco.get('valor')
             )
             oferta_de_material.save()
+
+        for kit in proponente.kits.all():
+            proponente.kits.remove(kit)
+
+        for kit in request.data.get('kits_fornecidos'):
+            proponente.kits.add(kit)
         return Response(ProponenteSerializer(proponente).data, status=status.HTTP_200_OK)
 
     @action(detail=False, url_path='verifica-cnpj')

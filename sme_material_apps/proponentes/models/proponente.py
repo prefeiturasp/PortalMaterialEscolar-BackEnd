@@ -147,7 +147,7 @@ class Proponente(ModeloBase):
 
     responsavel = models.CharField("Responsável", max_length=255, blank=True, null=True)
 
-    kits = models.ManyToManyField(Kit, related_name='proponentes')
+    kits = models.ManyToManyField(Kit, blank=True, related_name='proponentes')
 
     status = models.CharField(
         'status',
