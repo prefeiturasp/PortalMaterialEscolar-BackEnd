@@ -6,7 +6,7 @@ from rest_framework.permissions import AllowAny
 from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
-from sme_material_apps.core.models import Material
+from sme_material_apps.core.models import Material, Kit
 from ..serializers.proponente_serializer import ProponenteSerializer, ProponenteCreateSerializer
 
 from ...models import Proponente, OfertaDeMaterial
@@ -51,8 +51,9 @@ class ProponentesViewSet(mixins.CreateModelMixin,
         for kit in proponente.kits.all():
             proponente.kits.remove(kit)
 
-        for kit in request.data.get('kits_fornecidos'):
-            proponente.kits.add(kit)
+        for kit in request.data.get('kits'):
+            kit_obj = Kit.objects.get(uuid=kit)
+            proponente.kits.add(kit_obj)
         return Response(ProponenteSerializer(proponente).data, status=status.HTTP_200_OK)
 
     @action(detail=False, url_path='verifica-cnpj')
