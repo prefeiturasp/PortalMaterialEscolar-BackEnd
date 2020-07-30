@@ -77,26 +77,6 @@ class ProponenteAdmin(admin.ModelAdmin):
     ultima_alteracao.admin_order_field = 'alterado_em'
     ultima_alteracao.short_description = 'Última alteração'
 
-    def tem_kit_emei_completo(self, obj):
-        return obj.tem_kit_emei_completo
-    tem_kit_emei_completo.boolean = True
-
-    def tem_kit_alfabetizacao_completo(self, obj):
-        return obj.tem_kit_ciclo_alfabetizacao_completo
-    tem_kit_alfabetizacao_completo.boolean = True
-
-    def tem_kit_interdisciplinar_completo(self, obj):
-        return obj.tem_kit_ciclo_interdisciplinar_completo
-    tem_kit_interdisciplinar_completo.boolean = True
-
-    def tem_kit_autoral_completo(self, obj):
-        return obj.tem_kit_ciclo_autoral_completo
-    tem_kit_autoral_completo.boolean = True
-
-    def tem_kit_ensino_medio_completo(self, obj):
-        return obj.tem_kit_medio_eja_mova_completo
-    tem_kit_ensino_medio_completo.boolean = True
-
     def kits_fornecidos(self, obj):
         return ", ".join([str(k) for k in obj.kits.all()])
 
@@ -116,8 +96,7 @@ class ProponenteAdmin(admin.ModelAdmin):
     search_fields = ('uuid', 'cnpj', 'razao_social', 'responsavel')
     list_filter = ('status',)
     inlines = [MateriaisFornecidosInLine, LojasInLine, AnexosInLine]
-    readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social', 'tem_kit_emei_completo', 'tem_kit_alfabetizacao_completo',
-                       'tem_kit_interdisciplinar_completo', 'tem_kit_autoral_completo', 'tem_kit_ensino_medio_completo')
+    readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social')
 
 
 @admin.register(OfertaDeMaterial)
