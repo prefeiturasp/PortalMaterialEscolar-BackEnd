@@ -147,6 +147,8 @@ class Proponente(ModeloBase):
 
     responsavel = models.CharField("Responsável", max_length=255, blank=True, null=True)
 
+    kits = models.ManyToManyField(Kit, blank=True, related_name='proponentes')
+
     status = models.CharField(
         'status',
         max_length=15,
@@ -180,39 +182,14 @@ class Proponente(ModeloBase):
         return self.anexos.all()
 
     @property
-    def tem_kit_emei_completo(self):
-        kit = Kit.objects.get(nome='Kit Educação Infantil (Infantil I e II - EMEI)')
-        materiais = [m.material.nome for m in kit.materiais_do_kit.all()]
-        materiais_kit = [m.material.nome for m in self.ofertas_de_materiais.all()]
-        return all(material in materiais_kit for material in materiais)
-
-    @property
-    def tem_kit_ciclo_alfabetizacao_completo(self):
-        kit = Kit.objects.get(nome='Kit Ensino Fundamental - Ciclo de Alfabetização (1º ao 3º ano)')
-        materiais = [m.material.nome for m in kit.materiais_do_kit.all()]
-        materiais_kit = [m.material.nome for m in self.ofertas_de_materiais.all()]
-        return all(material in materiais_kit for material in materiais)
-
-    @property
-    def tem_kit_ciclo_interdisciplinar_completo(self):
-        kit = Kit.objects.get(nome='Kit Ensino Fundamental - Ciclo Interdisciplinar (4º ao 6º ano)')
-        materiais = [m.material.nome for m in kit.materiais_do_kit.all()]
-        materiais_kit = [m.material.nome for m in self.ofertas_de_materiais.all()]
-        return all(material in materiais_kit for material in materiais)
-
-    @property
-    def tem_kit_ciclo_autoral_completo(self):
-        kit = Kit.objects.get(nome='Kit Ensino Fundamental - Ciclo Autoral (7º ao 9º ano)')
-        materiais = [m.material.nome for m in kit.materiais_do_kit.all()]
-        materiais_kit = [m.material.nome for m in self.ofertas_de_materiais.all()]
-        return all(material in materiais_kit for material in materiais)
-
-    @property
-    def tem_kit_medio_eja_mova_completo(self):
-        kit = Kit.objects.get(nome='Kit Ensino Médio/EJA e MOVA')
-        materiais = [m.material.nome for m in kit.materiais_do_kit.all()]
-        materiais_kit = [m.material.nome for m in self.ofertas_de_materiais.all()]
-        return all(material in materiais_kit for material in materiais)
+    def valor_total_kits(self):
+        kits_valores = []
+        for kit in self.kits.all():
+            valor_kit = 0
+            for material_kit in kit.materiais_do_kit.all():
+                valor_kit += self.ofertas_de_materiais.get(material=material_kit.material).preco * material_kit.unidades
+            kits_valores.append({'kit': kit, 'valor_kit': valor_kit})
+        return kits_valores
 
     @classmethod
     def cnpj_ja_cadastrado(cls, cnpj):
