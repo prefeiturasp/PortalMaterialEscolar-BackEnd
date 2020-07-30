@@ -183,12 +183,12 @@ class Proponente(ModeloBase):
 
     @property
     def valor_total_kits(self):
-        kits_valores = {}
+        kits_valores = []
         for kit in self.kits.all():
             valor_kit = 0
             for material_kit in kit.materiais_do_kit.all():
                 valor_kit += self.ofertas_de_materiais.get(material=material_kit.material).preco * material_kit.unidades
-            kits_valores.update({'kit': kit, 'valor_kit': valor_kit})
+            kits_valores.append({'kit': kit, 'valor_kit': valor_kit})
         return kits_valores
 
     @classmethod
