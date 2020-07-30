@@ -81,7 +81,7 @@ class ProponenteAdmin(admin.ModelAdmin):
         lista_kits = '<ul>'
         lista_kits += "\n".join(['<li>{}</li>'.format(str(k)) for k in obj.kits.all()])
         lista_kits += '&nbsp;' * 150 + '</ul>'
-        lista_kits += '</ul>'
+
         return mark_safe(lista_kits)
 
     actions = [
