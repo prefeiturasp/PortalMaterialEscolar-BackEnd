@@ -94,6 +94,7 @@ class ProponenteAdmin(admin.ModelAdmin):
                     'ultima_alteracao', 'kits_fornecidos')
     ordering = ('-alterado_em',)
     search_fields = ('uuid', 'cnpj', 'razao_social', 'responsavel')
+    filter_horizontal = ('kits',)
     list_filter = ('status',)
     inlines = [MateriaisFornecidosInLine, LojasInLine, AnexosInLine]
     readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social')
