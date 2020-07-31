@@ -81,8 +81,14 @@ class ProponenteAdmin(admin.ModelAdmin):
         lista_kits = '<ul>'
         lista_kits += "\n".join(['<li>{}</li>'.format(str(k)) for k in obj.kits.all()])
         lista_kits += '&nbsp;' * 150 + '</ul>'
-
         return mark_safe(lista_kits)
+
+    def get_valor_total_kits(self, obj):
+        lista_valor = ''
+        lista_valor += "\n".join(['{}</br>'.format(f"{k['kit']} - VALOR: {k['valor_kit']}") for k in obj.valor_total_kits])
+        return mark_safe(lista_valor)
+
+    get_valor_total_kits.short_description = 'Kits e Valores Fornecidos'
 
     actions = [
         'verifica_bloqueio_cnpj',
@@ -101,7 +107,8 @@ class ProponenteAdmin(admin.ModelAdmin):
     filter_horizontal = ('kits',)
     list_filter = ('status',)
     inlines = [MateriaisFornecidosInLine, LojasInLine, AnexosInLine]
-    readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social', 'kits')
+    readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social', 'get_valor_total_kits')
+    exclude = ('kits',)
 
 
 @admin.register(OfertaDeMaterial)
