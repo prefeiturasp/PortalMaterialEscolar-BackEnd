@@ -7,7 +7,7 @@ class MaterialSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Material
-        fields = ('id', 'nome', 'preco_maximo')
+        fields = ('id', 'nome')
 
 
 class MaterialLookUpSerializer(serializers.ModelSerializer):

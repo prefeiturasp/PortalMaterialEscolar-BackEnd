@@ -77,25 +77,18 @@ class ProponenteAdmin(admin.ModelAdmin):
     ultima_alteracao.admin_order_field = 'alterado_em'
     ultima_alteracao.short_description = 'Última alteração'
 
-    def tem_kit_emei_completo(self, obj):
-        return obj.tem_kit_emei_completo
-    tem_kit_emei_completo.boolean = True
+    def kits_fornecidos(self, obj):
+        lista_kits = '<ul>'
+        lista_kits += "\n".join(['<li>{}</li>'.format(str(k)) for k in obj.kits.all()])
+        lista_kits += '&nbsp;' * 150 + '</ul>'
+        return mark_safe(lista_kits)
 
-    def tem_kit_alfabetizacao_completo(self, obj):
-        return obj.tem_kit_ciclo_alfabetizacao_completo
-    tem_kit_alfabetizacao_completo.boolean = True
+    def get_valor_total_kits(self, obj):
+        lista_valor = ''
+        lista_valor += "\n".join(['{}</br>'.format(f"{k['kit']} - VALOR: {k['valor_kit']}") for k in obj.valor_total_kits])
+        return mark_safe(lista_valor)
 
-    def tem_kit_interdisciplinar_completo(self, obj):
-        return obj.tem_kit_ciclo_interdisciplinar_completo
-    tem_kit_interdisciplinar_completo.boolean = True
-
-    def tem_kit_autoral_completo(self, obj):
-        return obj.tem_kit_ciclo_autoral_completo
-    tem_kit_autoral_completo.boolean = True
-
-    def tem_kit_ensino_medio_completo(self, obj):
-        return obj.tem_kit_medio_eja_mova_completo
-    tem_kit_ensino_medio_completo.boolean = True
+    get_valor_total_kits.short_description = 'Kits e Valores Fornecidos'
 
     actions = [
         'verifica_bloqueio_cnpj',
@@ -108,13 +101,14 @@ class ProponenteAdmin(admin.ModelAdmin):
         'muda_status_para_credenciado',
         'atualiza_coordenadas_action']
     list_display = ('protocolo', 'cnpj', 'razao_social', 'responsavel', 'telefone', 'email', 'status',
-                    'ultima_alteracao')
+                    'ultima_alteracao', 'kits_fornecidos')
     ordering = ('-alterado_em',)
     search_fields = ('uuid', 'cnpj', 'razao_social', 'responsavel')
+    filter_horizontal = ('kits',)
     list_filter = ('status',)
     inlines = [MateriaisFornecidosInLine, LojasInLine, AnexosInLine]
-    readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social', 'tem_kit_emei_completo', 'tem_kit_alfabetizacao_completo',
-                       'tem_kit_interdisciplinar_completo', 'tem_kit_autoral_completo', 'tem_kit_ensino_medio_completo')
+    readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social', 'get_valor_total_kits')
+    exclude = ('kits',)
 
 
 @admin.register(OfertaDeMaterial)
