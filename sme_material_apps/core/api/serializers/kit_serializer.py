@@ -9,7 +9,7 @@ class KitSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Kit
-        fields = ('uuid', 'nome', 'materiais_do_kit', 'preco_maximo', 'ativo')
+        fields = ('uuid', 'nome', 'preco_maximo', 'ativo', 'ordem', 'materiais_do_kit')
 
 
 class KitLookupSerializer(serializers.ModelSerializer):
