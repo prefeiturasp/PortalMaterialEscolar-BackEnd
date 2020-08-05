@@ -9,7 +9,7 @@ from ...api.serializers.loja_serializer import (LojaCreateSerializer,
                                                 LojaSerializer)
 from ....core.api.serializers.kit_serializer import KitLookupSerializer
 from ...api.serializers.oferta_de_material_serializer import (
-    OfertaDeMaterialCreateSerializer, OfertaDeMaterialSerializer, OfertaDeMaterialLookupSerializer)
+    OfertaDeMaterialSerializer, OfertaDeMaterialLookupSerializer)
 from ...models import Proponente, Loja
 
 log = logging.getLogger(__name__)
@@ -29,20 +29,10 @@ class ProponenteSerializer(serializers.ModelSerializer):
 
 
 class ProponenteCreateSerializer(serializers.ModelSerializer):
-
-    ofertas_de_materiais = OfertaDeMaterialCreateSerializer(many=True)
     lojas = LojaCreateSerializer(many=True)
 
     def create(self, validated_data):
-        ofertas_de_materiais = validated_data.pop('ofertas_de_materiais')
         lojas = validated_data.pop('lojas')
-
-        """
-        if not ofertas_de_materiais:
-            msgError = "Pelo menos uma oferta deve ser enviada!"
-            log.info(msgError)
-            raise ValidationError(msgError)
-        """
 
         if not lojas:
             msgError = "Pelo menos uma loja precisa ser enviada!"
@@ -52,20 +42,13 @@ class ProponenteCreateSerializer(serializers.ModelSerializer):
         proponente = Proponente.objects.create(**validated_data)
         log.info("Criando proponente com uuid: {}".format(proponente.uuid))
 
-        ofertas_lista = []
-        for oferta in ofertas_de_materiais:
-            oferta_object = OfertaDeMaterialCreateSerializer().create(oferta)
-            ofertas_lista.append(oferta_object)
-        proponente.ofertas_de_materiais.set(ofertas_lista)
-        log.info("Proponente {}, Ofertas de materiais: {}".format(proponente.uuid, ofertas_lista))
-
         lojas_lista = []
         for loja in lojas:
             loja_object = LojaCreateSerializer().create(loja)
             lojas_lista.append(loja_object)
         proponente.lojas.set(lojas_lista)
         atualiza_coordenadas_lojas(proponente.lojas)
-        log.info("Proponente {}, lojas: {}".format(proponente.uuid, ofertas_lista))
+        log.info("Proponente {}, lojas: {}".format(proponente.uuid, lojas_lista))
         log.info("Criação de proponente finalizada!")
 
         return proponente

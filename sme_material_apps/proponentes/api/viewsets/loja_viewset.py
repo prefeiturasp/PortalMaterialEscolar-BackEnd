@@ -1,4 +1,5 @@
 from django.db.models.expressions import RawSQL
+from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework import mixins, status
 from rest_framework.decorators import action
@@ -39,16 +40,16 @@ class LojaViewSet(mixins.ListModelMixin, GenericViewSet):
         latitude = self.request.query_params.get('latitude', None)
         longitude = self.request.query_params.get('longitude', None)
         queryset = self.get_queryset()
-        if request.data.get('tipo_busca', None) == 'kits':
+        try:
             kit = Kit.objects.get(uuid=request.data.get('kit'))
-            materiais = [m.material.nome for m in kit.materiais_do_kit.all()]
-            for material in materiais:
-                queryset = queryset.filter(
-                    proponente__ofertas_de_materiais__material__nome=material
-                )
-        elif request.data.get('tipo_busca', None) == 'itens':
+        except Kit.DoesNotExist:
+            raise ValidationError('Kit não encontrado.')
+
+        materiais = [m.material.nome for m in kit.materiais_do_kit.all()]
+        for material in materiais:
             queryset = queryset.filter(
-                proponente__ofertas_de_materiais__material__nome__in=request.data.get('materiais')).distinct()
+                proponente__ofertas_de_materiais__material__nome=material
+            )
 
         return Response(
             LojaCredenciadaSerializer(
