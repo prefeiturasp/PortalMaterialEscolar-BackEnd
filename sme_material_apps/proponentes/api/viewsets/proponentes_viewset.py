@@ -10,9 +10,11 @@ from rest_framework.response import Response
 from rest_framework.viewsets import GenericViewSet
 
 from sme_material_apps.core.models import Material, Kit
+from ..serializers.loja_serializer import LojaCreateSerializer
 from ..serializers.proponente_serializer import ProponenteSerializer, ProponenteCreateSerializer
 
 from ...models import Proponente, OfertaDeMaterial
+from ...services import atualiza_coordenadas_lojas
 
 log = logging.getLogger(__name__)
 
@@ -66,6 +68,28 @@ class ProponentesViewSet(mixins.CreateModelMixin,
             kit_obj = Kit.objects.get(uuid=kit)
             proponente.kits.add(kit_obj)
 
+        return Response(ProponenteSerializer(proponente).data, status=status.HTTP_200_OK)
+
+    @action(detail=True, methods=['patch'], url_path='atualiza-lojas')
+    def atualiza_lojas(self, request, uuid):
+        proponente = self.get_object()
+        proponente.lojas.all().delete()
+        lojas = request.data.pop('lojas')
+        if not lojas:
+            msgError = "Pelo menos uma loja precisa ser enviada!"
+            log.info(msgError)
+            raise ValidationError(msgError)
+        lojas_lista = []
+        for loja in lojas:
+            atributos_extras = ['proponente', 'uuid', 'id', 'email', 'criado_em',
+                                'alterado_em', 'latitude', 'longitude', 'cidade',
+                                'uf', 'firstName']
+            for attr in atributos_extras:
+                loja.pop(attr, '')
+            loja_object = LojaCreateSerializer().create(loja)
+            lojas_lista.append(loja_object)
+        proponente.lojas.set(lojas_lista)
+        atualiza_coordenadas_lojas(proponente.lojas)
         return Response(ProponenteSerializer(proponente).data, status=status.HTTP_200_OK)
 
     @action(detail=False, url_path='verifica-cnpj')
