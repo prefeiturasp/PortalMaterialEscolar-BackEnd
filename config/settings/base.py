@@ -261,7 +261,7 @@ LOGGING = {
     "formatters": {
         "verbose": {
             "format": "%(levelname)s %(asctime)s %(module)s "
-            "%(process)d %(thread)d %(message)s"
+                      "%(process)d %(thread)d %(message)s"
         }
     },
     "handlers": {
@@ -336,6 +336,11 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 
 }
+
+JWT_AUTH = {
+    "JWT_ALLOW_REFRESH": True,
+}
+
 # REDIS
 CACHES = {
     "default": {
@@ -357,4 +362,4 @@ sentry_sdk.init(
     integrations=[DjangoIntegration()]
 )
 
-GEOREF_API_URL=env('GEOREF_API_URL')
+GEOREF_API_URL = env('GEOREF_API_URL')
