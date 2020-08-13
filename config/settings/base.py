@@ -1,6 +1,7 @@
 """
 Base settings to build other settings files upon.
 """
+import datetime
 from pathlib import Path
 
 import environ
@@ -338,7 +339,9 @@ REST_FRAMEWORK = {
 }
 
 JWT_AUTH = {
-    "JWT_ALLOW_REFRESH": True,
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(hours=1),
+    'JWT_ALLOW_REFRESH': True,
 }
 
 # REDIS

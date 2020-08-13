@@ -10,7 +10,7 @@ from django.dispatch import receiver
 from auditlog.models import AuditlogHistoryField
 from auditlog.registry import auditlog
 from sme_material_apps.core.helpers.validar_email import email_valido
-from sme_material_apps.core.models_abstracts import ModeloBase
+from sme_material_apps.core.models_abstracts import ModeloBase, TemObservacao
 from sme_material_apps.core.models import Kit
 
 from ..tasks import (enviar_email_confirmacao_cadastro,
@@ -22,7 +22,7 @@ from ...custom_user.models import User
 log = logging.getLogger(__name__)
 
 
-class Proponente(ModeloBase):
+class Proponente(ModeloBase, TemObservacao):
     historico = AuditlogHistoryField()
 
     UF_CHOICES = (
