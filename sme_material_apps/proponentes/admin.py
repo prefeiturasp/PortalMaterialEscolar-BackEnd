@@ -2,7 +2,7 @@ from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django.contrib import messages
 from .models import (Proponente, OfertaDeMaterial, Loja, Anexo, TipoDocumento)
-from .services import muda_status_de_proponentes, atualiza_coordenadas
+from .services import muda_status_de_proponentes, atualiza_coordenadas, envia_email_pendencias
 
 
 class MateriaisFornecidosInLine(admin.TabularInline):
@@ -71,6 +71,15 @@ class ProponenteAdmin(admin.ModelAdmin):
 
     atualiza_coordenadas_action.short_description = f'Atualiza coordenadas.'
 
+    def envia_email_pendencias_action(self, request, queryset):
+        if len(queryset) != len(queryset.filter(status=Proponente.STATUS_PENDENTE)):
+            self.message_user(request, "Selecione apenas proponentes com status pendente", level=messages.ERROR)
+        else:
+            envia_email_pendencias(queryset)
+            self.message_user(request, f'E-mail de pendências enviado com sucesso.')
+
+    envia_email_pendencias_action.short_description = f'Enviar e-mail de pendências'
+
     def ultima_alteracao(self, obj):
         return obj.alterado_em.strftime("%d/%m/%Y %H:%M:%S")
 
@@ -85,7 +94,8 @@ class ProponenteAdmin(admin.ModelAdmin):
 
     def get_valor_total_kits(self, obj):
         lista_valor = ''
-        lista_valor += "\n".join(['{}</br>'.format(f"{k['kit']} - VALOR: {k['valor_kit']}") for k in obj.valor_total_kits])
+        lista_valor += "\n".join(
+            ['{}</br>'.format(f"{k['kit']} - VALOR: {k['valor_kit']}") for k in obj.valor_total_kits])
         return mark_safe(lista_valor)
 
     get_valor_total_kits.short_description = 'Kits e Valores Fornecidos'
@@ -99,7 +109,8 @@ class ProponenteAdmin(admin.ModelAdmin):
         'muda_status_para_inscrito',
         'muda_status_para_em_processo',
         'muda_status_para_credenciado',
-        'atualiza_coordenadas_action']
+        'atualiza_coordenadas_action',
+        'envia_email_pendencias_action']
     list_display = ('protocolo', 'cnpj', 'razao_social', 'responsavel', 'telefone', 'email', 'status',
                     'ultima_alteracao', 'kits_fornecidos')
     ordering = ('-alterado_em',)
