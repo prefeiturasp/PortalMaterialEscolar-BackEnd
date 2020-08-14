@@ -32,6 +32,11 @@ def atualiza_coordenadas(queryset):
         atualiza_coordenadas_lojas(proponente.lojas)
 
 
+def envia_email_pendencias(queryset):
+    for proponente in queryset.all():
+        proponente.comunicar_pendencia()
+
+
 def atualiza_coordenadas_lojas(lojas):
     log.info("Atualizando coordendas das lojas físicas")
     for loja in lojas.all():

@@ -14,7 +14,7 @@ from sme_material_apps.core.models_abstracts import ModeloBase, TemObservacao
 from sme_material_apps.core.models import Kit
 
 from ..tasks import (enviar_email_confirmacao_cadastro,
-                     enviar_email_confirmacao_pre_cadastro)
+                     enviar_email_confirmacao_pre_cadastro, enviar_email_pendencia)
 from .tipo_documento import TipoDocumento
 from .validators import cep_validation, cnpj_validation, phone_validation
 from ...custom_user.models import User
@@ -174,6 +174,11 @@ class Proponente(ModeloBase, TemObservacao):
         if self.email:
             log.info(f'Enviando confirmação de cadastro (Protocolo:{self.protocolo}) enviada para {self.email}.')
             enviar_email_confirmacao_cadastro.delay(self.email, {'protocolo': self.protocolo})
+
+    def comunicar_pendencia(self):
+        if self.email:
+            log.info(f'Enviando e-mail de pendência no cadastro:{self.protocolo}) enviada para {self.email}.')
+            enviar_email_pendencia.delay(self.email)
 
     @property
     def protocolo(self):
