@@ -1,6 +1,11 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django.contrib import messages
+from import_export import resources
+from import_export.admin import ImportExportModelAdmin
+from import_export.fields import Field
+from rangefilter.filter import DateRangeFilter
+
 from .models import (Proponente, OfertaDeMaterial, Loja, Anexo, TipoDocumento)
 from .services import muda_status_de_proponentes, atualiza_coordenadas, envia_email_pendencias
 
@@ -20,8 +25,122 @@ class AnexosInLine(admin.TabularInline):
     extra = 1  # Quantidade de linhas que serão exibidas.
 
 
+class ProponenteResource(resources.ModelResource):
+    status = Field()
+    loja_1_nome_fantasia = Field()
+    loja_1_cep = Field()
+    loja_1_endereco = Field()
+    loja_1_numero = Field()
+    loja_1_complemento = Field()
+    loja_1_telefone = Field()
+    loja_1_foto_fachada = Field()
+    agenda_educacao_infantil = Field()
+    agenda_ensino_fundamental = Field()
+    apontador = Field()
+    borracha = Field()
+    caderno_brochurao_80_fls = Field()
+    caderno_desenho_96_fls = Field()
+    caderno_universitario_200_fls = Field()
+    caderno_universitario_96_fls = Field()
+    caneta_esferografica_azul = Field()
+    caneta_esferografica_preta = Field()
+    caneta_esferografica_vermelha = Field()
+
+    def dehydrate_status(self, obj):
+        return obj.get_status_display()
+
+    def dehydrate_loja_1_nome_fantasia(self, obj):
+        return obj.lojas.first().nome_fantasia if obj.lojas.exists() else None
+
+    def dehydrate_loja_1_cep(self, obj):
+        return obj.lojas.first().cep if obj.lojas.exists() else None
+
+    def dehydrate_loja_1_endereco(self, obj):
+        return obj.lojas.first().endereco if obj.lojas.exists() else None
+
+    def dehydrate_loja_1_numero(self, obj):
+        return obj.lojas.first().numero if obj.lojas.exists() else None
+
+    def dehydrate_loja_1_complemento(self, obj):
+        return obj.lojas.first().complemento if obj.lojas.exists() else None
+
+    def dehydrate_loja_1_telefone(self, obj):
+        return obj.lojas.first().telefone if obj.lojas.exists() else None
+
+    def dehydrate_loja_1_foto_fachada(self, obj):
+        if obj.lojas.exists() and obj.lojas.first().foto_fachada:
+            return obj.lojas.first().foto_fachada.url
+        return None
+
+    def dehydrate_agenda_educacao_infantil(self, obj):
+        return obj.get_preco_material("Agenda Educação Infantil")
+
+    def dehydrate_agenda_ensino_fundamental(self, obj):
+        return obj.get_preco_material("Agenda Ensino Fundamental")
+
+    def dehydrate_apontador(self, obj):
+        return obj.get_preco_material("Apontador")
+
+    def dehydrate_borracha(self, obj):
+        return obj.get_preco_material("Borracha")
+
+    def dehydrate_caderno_brochurao_80_fls(self, obj):
+        return obj.get_preco_material("Caderno brochurão 80 Fls.")
+
+    def dehydrate_caderno_desenho_96_fls(self, obj):
+        return obj.get_preco_material("Caderno desenho 96 Fls.")
+
+    def dehydrate_caderno_universitario_200_fls(self, obj):
+        return obj.get_preco_material("Caderno universitário 200 Fls.")
+
+    def dehydrate_caderno_universitario_96_fls(self, obj):
+        return obj.get_preco_material("Caderno universitário 96 Fls.")
+
+    def dehydrate_caneta_esferografica_azul(self, obj):
+        return obj.get_preco_material("Caneta esferográfica azul")
+
+    def dehydrate_caneta_esferografica_preta(self, obj):
+        return obj.get_preco_material("Caneta esferográfica preta")
+
+    def dehydrate_caneta_esferografica_vermelha(self, obj):
+        return obj.get_preco_material("Caneta esferográfica vermelha")
+
+    """
+	Caneta hidrográfica (12 cores)
+	Cola branca
+	Esquadro 45º
+	Esquadro 60º
+	Estojo escolar
+	Giz de cera Ensino Fundamental (12 cores)
+	Giz de cera grosso Educação Infantil (12 cores)
+	Lapiseira
+	Lápis de cor (12 cores)
+	Lápis grafite
+	Massa para modelar (06 cores)
+	Régua
+	Tesoura
+	Tinta guache (06 cores)
+	Transferidor 180º
+	"""
+
+    class Meta:
+        model = Proponente
+        fields = ('status', 'cnpj', 'razao_social', 'end_cep', 'end_bairro', 'end_logradouro',
+                  'end_numero', 'end_complemento', 'end_uf', 'end_uf', 'responsavel', 'telefone',
+                  'email', 'loja_1_nome_fantasia', 'loja_1_cep', 'loja_1_endereco', 'loja_1_numero',
+                  'loja_1_complemento', 'loja_1_telefone', 'loja_1_foto_fachada', 'agenda_educacao_infantil',
+                  'agenda_ensino_fundamental', 'apontador', 'borracha', 'caderno_brochurao_80_fls',
+                  'caderno_desenho_96_fls', 'caderno_universitario_200_fls', 'caderno_universitario_96_fls',
+                  'caneta_esferografica_azul', 'caneta_esferografica_preta', 'caneta_esferografica_vermelha'
+
+                  )
+        export_order = fields
+
+
 @admin.register(Proponente)
-class ProponenteAdmin(admin.ModelAdmin):
+class ProponenteAdmin(ImportExportModelAdmin):
+    resource_class = ProponenteResource
+
     def muda_status_para_inscrito(self, request, queryset):
         muda_status_de_proponentes(queryset, Proponente.STATUS_INSCRITO)
         self.message_user(request, f'Status alterados para {Proponente.STATUS_NOMES[Proponente.STATUS_INSCRITO]}.')
@@ -116,7 +235,7 @@ class ProponenteAdmin(admin.ModelAdmin):
     ordering = ('-alterado_em',)
     search_fields = ('uuid', 'cnpj', 'razao_social', 'responsavel')
     filter_horizontal = ('kits',)
-    list_filter = ('status',)
+    list_filter = ('status', ('criado_em', DateRangeFilter))
     inlines = [MateriaisFornecidosInLine, LojasInLine, AnexosInLine]
     readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social', 'get_valor_total_kits')
     exclude = ('kits',)

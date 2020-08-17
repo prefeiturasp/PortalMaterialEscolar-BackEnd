@@ -198,6 +198,11 @@ class Proponente(ModeloBase, TemObservacao):
             kits_valores.append({'kit': kit, 'valor_kit': valor_kit})
         return kits_valores
 
+    def get_preco_material(self, material):
+        if self.ofertas_de_materiais.filter(material__nome=material).exists():
+            return self.ofertas_de_materiais.get(material__nome=material).preco
+        return None
+
     @classmethod
     def cnpj_ja_cadastrado(cls, cnpj):
         return cls.objects.filter(cnpj=cnpj).exists()

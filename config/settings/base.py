@@ -92,6 +92,8 @@ THIRD_PARTY_APPS = [
     "django_use_email_as_username",
     "django_filters",
     "multiselectfield",
+    "import_export",
+    "rangefilter"
 ]
 
 LOCAL_APPS = [
