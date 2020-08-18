@@ -25,7 +25,13 @@ class AnexosInLine(admin.TabularInline):
     extra = 1  # Quantidade de linhas que serão exibidas.
 
 
-class ProponenteResource(resources.ModelResource):
+class RequestModelResource(resources.ModelResource):
+    def __init__(self, *args, **kwargs):
+        self.request = kwargs.pop('request', None)
+        super(RequestModelResource, self).__init__(*args, **kwargs)
+
+
+class ProponenteResource(RequestModelResource):
     status = Field()
     loja_1_nome_fantasia = Field()
     loja_1_cep = Field()
@@ -91,7 +97,7 @@ class ProponenteResource(resources.ModelResource):
 
     def dehydrate_loja_1_foto_fachada(self, obj):
         if obj.lojas.exists() and obj.lojas.first().foto_fachada:
-            return obj.lojas.first().foto_fachada.url
+            return self.request.get_host() + obj.lojas.first().foto_fachada.url
         return None
 
     def dehydrate_agenda_educacao_infantil(self, obj):
@@ -185,7 +191,7 @@ class ProponenteResource(resources.ModelResource):
         return obj.get_valor_kit("Kit Ensino Médio/EJA e MOVA")
 
     def dehydrate_doc_ato_constitutivo_estatuto_ou_contrato_social_link(self, obj):
-        return obj.get_documento_link("Ato constitutivo, estatuto ou contrato social")
+        return obj.get_documento_link(self.request, "Ato constitutivo, estatuto ou contrato social")
 
     def dehydrate_doc_ato_constitutivo_estatuto_ou_contrato_social_data_validade(self, obj):
         return obj.get_documento_data_validade("Ato constitutivo, estatuto ou contrato social")
@@ -195,9 +201,6 @@ class ProponenteResource(resources.ModelResource):
 
     class Meta:
         model = Proponente
-        widgets = {
-            'doc_ato_constitutivo_estatuto_ou_contrato_social_data_validade': {'format': '%d/%m/%Y'},
-        }
         fields = ('status', 'cnpj', 'razao_social', 'end_cep', 'end_bairro', 'end_logradouro',
                   'end_numero', 'end_complemento', 'end_uf', 'end_uf', 'responsavel', 'telefone',
                   'email')
@@ -207,6 +210,10 @@ class ProponenteResource(resources.ModelResource):
 @admin.register(Proponente)
 class ProponenteAdmin(ImportExportModelAdmin):
     resource_class = ProponenteResource
+
+    def get_resource_kwargs(self, request, *args, **kwargs):
+        """ Passing request to resource obj to control exported fields dynamically """
+        return {'request': request}
 
     def muda_status_para_inscrito(self, request, queryset):
         muda_status_de_proponentes(queryset, Proponente.STATUS_INSCRITO)

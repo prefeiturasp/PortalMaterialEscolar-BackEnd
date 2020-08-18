@@ -212,10 +212,10 @@ class Proponente(ModeloBase, TemObservacao):
             return valor_kit
         return None
 
-    def get_documento_link(self, substring):
+    def get_documento_link(self, request, substring):
         documento = TipoDocumento.objects.get(nome__icontains=substring)
         if self.arquivos_anexos.filter(tipo_documento=documento).exists():
-            return self.arquivos_anexos.get(tipo_documento=documento).arquivo.url
+            return request.get_host() + self.arquivos_anexos.get(tipo_documento=documento).arquivo.url
         return None
 
     def get_documento_data_validade(self, substring):
