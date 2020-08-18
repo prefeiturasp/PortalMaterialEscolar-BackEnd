@@ -45,6 +45,25 @@ class ProponenteResource(resources.ModelResource):
     caneta_esferografica_azul = Field()
     caneta_esferografica_preta = Field()
     caneta_esferografica_vermelha = Field()
+    caneta_hidrografica_12_cores = Field()
+    cola_branca = Field()
+    esquadro_45 = Field()
+    esquadro_60 = Field()
+    estojo_escolar = Field()
+    giz_de_cera_ensino_fundamental_12_cores = Field()
+    giz_de_cera_grosso_educacao_infantil_12_cores = Field()
+    lapis_de_cor_12_cores = Field()
+    lapis_grafite = Field()
+    massa_para_modelar_06_cores = Field()
+    regua = Field()
+    tesoura = Field()
+    tinta_guache_06_cores = Field()
+    transferidor_180 = Field()
+    kit_educacao_infantil_emei = Field()
+    kit_ensino_fundamental_ciclo_alfabetizacao = Field()
+    kit_ensino_fundamental_ciclo_interdisciplinar = Field()
+    kit_ensino_fundamental_ciclo_autoral = Field()
+    kit_ensino_medio_eja_mova = Field()
 
     def dehydrate_status(self, obj):
         return obj.get_status_display()
@@ -105,35 +124,68 @@ class ProponenteResource(resources.ModelResource):
     def dehydrate_caneta_esferografica_vermelha(self, obj):
         return obj.get_preco_material("Caneta esferográfica vermelha")
 
-    """
-	Caneta hidrográfica (12 cores)
-	Cola branca
-	Esquadro 45º
-	Esquadro 60º
-	Estojo escolar
-	Giz de cera Ensino Fundamental (12 cores)
-	Giz de cera grosso Educação Infantil (12 cores)
-	Lapiseira
-	Lápis de cor (12 cores)
-	Lápis grafite
-	Massa para modelar (06 cores)
-	Régua
-	Tesoura
-	Tinta guache (06 cores)
-	Transferidor 180º
-	"""
+    def dehydrate_caneta_hidrografica_12_cores(self, obj):
+        return obj.get_preco_material("Caneta hidrográfica (12 cores)")
+
+    def dehydrate_cola_branca(self, obj):
+        return obj.get_preco_material("Cola branca")
+
+    def dehydrate_esquadro_45(self, obj):
+        return obj.get_preco_material("Esquadro 45º")
+
+    def dehydrate_esquadro_60(self, obj):
+        return obj.get_preco_material("Esquadro 60º")
+
+    def dehydrate_estojo_escolar(self, obj):
+        return obj.get_preco_material("Estojo escolar")
+
+    def dehydrate_giz_de_cera_ensino_fundamental_12_cores(self, obj):
+        return obj.get_preco_material("Giz de cera Ensino Fundamental (12 cores)")
+
+    def dehydrate_giz_de_cera_grosso_educacao_infantil_12_cores(self, obj):
+        return obj.get_preco_material("Giz de cera grosso Educação Infantil (12 cores)")
+
+    def dehydrate_lapis_de_cor_12_cores(self, obj):
+        return obj.get_preco_material("Lápis de cor (12 cores)")
+
+    def dehydrate_lapis_grafite(self, obj):
+        return obj.get_preco_material("Lápis grafite")
+
+    def dehydrate_massa_para_modelar_06_cores(self, obj):
+        return obj.get_preco_material("Massa para modelar (06 cores)")
+
+    def dehydrate_regua(self, obj):
+        return obj.get_preco_material("Régua")
+
+    def dehydrate_tesoura(self, obj):
+        return obj.get_preco_material("Tesoura")
+
+    def dehydrate_tinta_guache_06_cores(self, obj):
+        return obj.get_preco_material("Tinta guache (06 cores)")
+
+    def dehydrate_transferidor_180(self, obj):
+        return obj.get_preco_material("Transferidor 180º")
+
+    def dehydrate_kit_educacao_infantil_emei(self, obj):
+        return obj.get_valor_kit("Kit Educação Infantil (Infantil I e II - EMEI)")
+
+    def dehydrate_kit_ensino_fundamental_ciclo_alfabetizacao(self, obj):
+        return obj.get_valor_kit("Kit Ensino Fundamental - Ciclo de Alfabetização (1º ao 3º ano)")
+
+    def dehydrate_kit_ensino_fundamental_ciclo_interdisciplinar(self, obj):
+        return obj.get_valor_kit("Kit Ensino Fundamental - Ciclo Interdisciplinar (4º ao 6º ano)")
+
+    def dehydrate_kit_ensino_fundamental_ciclo_autoral(self, obj):
+        return obj.get_valor_kit("Kit Ensino Fundamental - Ciclo Autoral (7º ao 9º ano)")
+
+    def dehydrate_kit_ensino_medio_eja_mova(self, obj):
+        return obj.get_valor_kit("Kit Ensino Médio/EJA e MOVA")
 
     class Meta:
         model = Proponente
         fields = ('status', 'cnpj', 'razao_social', 'end_cep', 'end_bairro', 'end_logradouro',
                   'end_numero', 'end_complemento', 'end_uf', 'end_uf', 'responsavel', 'telefone',
-                  'email', 'loja_1_nome_fantasia', 'loja_1_cep', 'loja_1_endereco', 'loja_1_numero',
-                  'loja_1_complemento', 'loja_1_telefone', 'loja_1_foto_fachada', 'agenda_educacao_infantil',
-                  'agenda_ensino_fundamental', 'apontador', 'borracha', 'caderno_brochurao_80_fls',
-                  'caderno_desenho_96_fls', 'caderno_universitario_200_fls', 'caderno_universitario_96_fls',
-                  'caneta_esferografica_azul', 'caneta_esferografica_preta', 'caneta_esferografica_vermelha'
-
-                  )
+                  'email')
         export_order = fields
 
 

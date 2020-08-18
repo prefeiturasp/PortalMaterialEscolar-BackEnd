@@ -203,6 +203,15 @@ class Proponente(ModeloBase, TemObservacao):
             return self.ofertas_de_materiais.get(material__nome=material).preco
         return None
 
+    def get_valor_kit(self, kit):
+        if self.kits.filter(nome=kit).exists():
+            kit_obj = self.kits.get(nome=kit)
+            valor_kit = 0
+            for material_kit in kit_obj.materiais_do_kit.all():
+                valor_kit += self.ofertas_de_materiais.get(material=material_kit.material).preco * material_kit.unidades
+            return valor_kit
+        return None
+
     @classmethod
     def cnpj_ja_cadastrado(cls, cnpj):
         return cls.objects.filter(cnpj=cnpj).exists()
