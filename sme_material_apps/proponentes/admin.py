@@ -64,6 +64,9 @@ class ProponenteResource(resources.ModelResource):
     kit_ensino_fundamental_ciclo_interdisciplinar = Field()
     kit_ensino_fundamental_ciclo_autoral = Field()
     kit_ensino_medio_eja_mova = Field()
+    doc_ato_constitutivo_estatuto_ou_contrato_social_link = Field()
+    doc_ato_constitutivo_estatuto_ou_contrato_social_data_validade = Field()
+    doc_ato_constitutivo_estatuto_ou_contrato_social_dias_vencimento = Field()
 
     def dehydrate_status(self, obj):
         return obj.get_status_display()
@@ -181,8 +184,20 @@ class ProponenteResource(resources.ModelResource):
     def dehydrate_kit_ensino_medio_eja_mova(self, obj):
         return obj.get_valor_kit("Kit Ensino Médio/EJA e MOVA")
 
+    def dehydrate_doc_ato_constitutivo_estatuto_ou_contrato_social_link(self, obj):
+        return obj.get_documento_link("Ato constitutivo, estatuto ou contrato social")
+
+    def dehydrate_doc_ato_constitutivo_estatuto_ou_contrato_social_data_validade(self, obj):
+        return obj.get_documento_data_validade("Ato constitutivo, estatuto ou contrato social")
+
+    def dehydrate_doc_ato_constitutivo_estatuto_ou_contrato_social_dias_vencimento(self, obj):
+        return obj.get_documento_dias_vencimento("Ato constitutivo, estatuto ou contrato social")
+
     class Meta:
         model = Proponente
+        widgets = {
+            'doc_ato_constitutivo_estatuto_ou_contrato_social_data_validade': {'format': '%d/%m/%Y'},
+        }
         fields = ('status', 'cnpj', 'razao_social', 'end_cep', 'end_bairro', 'end_logradouro',
                   'end_numero', 'end_complemento', 'end_uf', 'end_uf', 'responsavel', 'telefone',
                   'email')
