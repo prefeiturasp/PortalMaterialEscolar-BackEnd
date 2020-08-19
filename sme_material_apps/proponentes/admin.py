@@ -7,7 +7,7 @@ from import_export.fields import Field
 from rangefilter.filter import DateRangeFilter
 
 from .models import (Proponente, OfertaDeMaterial, Loja, Anexo, TipoDocumento)
-from .services import muda_status_de_proponentes, atualiza_coordenadas, envia_email_pendencias
+from .services import muda_status_de_proponentes, atualiza_coordenadas, envia_email_pendencias, gera_excel
 
 
 class MateriaisFornecidosInLine(admin.TabularInline):
@@ -33,13 +33,6 @@ class RequestModelResource(resources.ModelResource):
 
 class ProponenteResource(RequestModelResource):
     status = Field()
-    loja_1_nome_fantasia = Field()
-    loja_1_cep = Field()
-    loja_1_endereco = Field()
-    loja_1_numero = Field()
-    loja_1_complemento = Field()
-    loja_1_telefone = Field()
-    loja_1_foto_fachada = Field()
     agenda_educacao_infantil = Field()
     agenda_ensino_fundamental = Field()
     apontador = Field()
@@ -70,35 +63,9 @@ class ProponenteResource(RequestModelResource):
     kit_ensino_fundamental_ciclo_interdisciplinar = Field()
     kit_ensino_fundamental_ciclo_autoral = Field()
     kit_ensino_medio_eja_mova = Field()
-    doc_ato_constitutivo_estatuto_ou_contrato_social_link = Field()
-    doc_ato_constitutivo_estatuto_ou_contrato_social_data_validade = Field()
-    doc_ato_constitutivo_estatuto_ou_contrato_social_dias_vencimento = Field()
 
     def dehydrate_status(self, obj):
         return obj.get_status_display()
-
-    def dehydrate_loja_1_nome_fantasia(self, obj):
-        return obj.lojas.first().nome_fantasia if obj.lojas.exists() else None
-
-    def dehydrate_loja_1_cep(self, obj):
-        return obj.lojas.first().cep if obj.lojas.exists() else None
-
-    def dehydrate_loja_1_endereco(self, obj):
-        return obj.lojas.first().endereco if obj.lojas.exists() else None
-
-    def dehydrate_loja_1_numero(self, obj):
-        return obj.lojas.first().numero if obj.lojas.exists() else None
-
-    def dehydrate_loja_1_complemento(self, obj):
-        return obj.lojas.first().complemento if obj.lojas.exists() else None
-
-    def dehydrate_loja_1_telefone(self, obj):
-        return obj.lojas.first().telefone if obj.lojas.exists() else None
-
-    def dehydrate_loja_1_foto_fachada(self, obj):
-        if obj.lojas.exists() and obj.lojas.first().foto_fachada:
-            return self.request.get_host() + obj.lojas.first().foto_fachada.url
-        return None
 
     def dehydrate_agenda_educacao_infantil(self, obj):
         return obj.get_preco_material("Agenda Educação Infantil")
@@ -190,15 +157,6 @@ class ProponenteResource(RequestModelResource):
     def dehydrate_kit_ensino_medio_eja_mova(self, obj):
         return obj.get_valor_kit("Kit Ensino Médio/EJA e MOVA")
 
-    def dehydrate_doc_ato_constitutivo_estatuto_ou_contrato_social_link(self, obj):
-        return obj.get_documento_link(self.request, "Ato constitutivo, estatuto ou contrato social")
-
-    def dehydrate_doc_ato_constitutivo_estatuto_ou_contrato_social_data_validade(self, obj):
-        return obj.get_documento_data_validade("Ato constitutivo, estatuto ou contrato social")
-
-    def dehydrate_doc_ato_constitutivo_estatuto_ou_contrato_social_dias_vencimento(self, obj):
-        return obj.get_documento_dias_vencimento("Ato constitutivo, estatuto ou contrato social")
-
     class Meta:
         model = Proponente
         fields = ('status', 'cnpj', 'razao_social', 'end_cep', 'end_bairro', 'end_logradouro',
@@ -273,6 +231,12 @@ class ProponenteAdmin(ImportExportModelAdmin):
 
     envia_email_pendencias_action.short_description = f'Enviar e-mail de pendências'
 
+    def gera_excel_action(self, request, queryset):
+        csv_data = ProponenteResource().export(queryset)
+        return gera_excel(request, queryset, csv_data)
+
+    gera_excel_action.short_description = f'Gerar excel'
+
     def ultima_alteracao(self, obj):
         return obj.alterado_em.strftime("%d/%m/%Y %H:%M:%S")
 
@@ -303,7 +267,8 @@ class ProponenteAdmin(ImportExportModelAdmin):
         'muda_status_para_em_processo',
         'muda_status_para_credenciado',
         'atualiza_coordenadas_action',
-        'envia_email_pendencias_action']
+        'envia_email_pendencias_action',
+        'gera_excel_action']
     list_display = ('protocolo', 'cnpj', 'razao_social', 'responsavel', 'telefone', 'email', 'status',
                     'ultima_alteracao', 'kits_fornecidos')
     ordering = ('-alterado_em',)

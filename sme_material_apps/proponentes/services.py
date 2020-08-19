@@ -1,10 +1,13 @@
 import logging
 
 import requests
+from django.db.models import Count, Max
 from django.conf import settings
-
-# from ..custom_user.models import User
+from django.utils.timezone import now
 from django.contrib.auth import get_user_model
+from django.http.response import HttpResponse
+
+from sme_material_apps.proponentes.models import Loja
 
 user_model = get_user_model()
 LAYERS = 'address'
@@ -35,6 +38,42 @@ def atualiza_coordenadas(queryset):
 def envia_email_pendencias(queryset):
     for proponente in queryset.all():
         proponente.comunicar_pendencia()
+
+
+def gera_excel(request, queryset, csv_data):
+    numero_maximo_de_lojas = queryset.annotate(
+        num_lojas=Count('lojas')).aggregate(
+        Max('num_lojas'))['num_lojas__max']
+    for i in range(numero_maximo_de_lojas):
+        lojas = []
+        for proponente in queryset.all():
+            try:
+                lojas.append(proponente.lojas.all()[i])
+            except IndexError:
+                lojas.append({})
+        nomes_fantasia = [loja.nome_fantasia if isinstance(loja, Loja) else '' for loja in lojas]
+        ceps = [loja.cep if isinstance(loja, Loja) else '' for loja in lojas]
+        enderecos = [loja.endereco if isinstance(loja, Loja) else '' for loja in lojas]
+        bairros = [loja.bairro if isinstance(loja, Loja) else '' for loja in lojas]
+        numeros = [loja.numero if isinstance(loja, Loja) else '' for loja in lojas]
+        complementos = [loja.complemento if isinstance(loja, Loja) else '' for loja in lojas]
+        telefones = [loja.telefone if isinstance(loja, Loja) else '' for loja in lojas]
+        fotos_fachada = [
+            request.get_host() + loja.foto_fachada.url if isinstance(loja, Loja) and loja.foto_fachada else '' for
+            loja in lojas]
+        csv_data.append_col(nomes_fantasia, header=f'loja_{i + 1}_nome_fantasia')
+        csv_data.append_col(ceps, header=f'loja_{i + 1}_cep')
+        csv_data.append_col(enderecos, header=f'loja_{i + 1}_endereco')
+        csv_data.append_col(bairros, header=f'loja_{i + 1}_bairro')
+        csv_data.append_col(numeros, header=f'loja_{i + 1}_numero')
+        csv_data.append_col(complementos, header=f'loja_{i + 1}_complemento')
+        csv_data.append_col(telefones, header=f'loja_{i + 1}_telefone')
+        csv_data.append_col(fotos_fachada, header=f'loja_{i + 1}_foto_fachada')
+    time = now().astimezone().isoformat('T', 'minutes')[:-6]
+    filename = f"proponentes_{time}.xlsx"
+    response = HttpResponse(csv_data.export('xls'), content_type="application/ms-excel")
+    response['Content-Disposition'] = f'attachment; filename={filename}.xls'
+    return response
 
 
 def atualiza_coordenadas_lojas(lojas):
