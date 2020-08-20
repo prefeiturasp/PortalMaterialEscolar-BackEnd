@@ -166,7 +166,7 @@ class ProponenteResource(RequestModelResource):
 
 
 @admin.register(Proponente)
-class ProponenteAdmin(ImportExportModelAdmin):
+class ProponenteAdmin(admin.ModelAdmin):
     resource_class = ProponenteResource
 
     def get_resource_kwargs(self, request, *args, **kwargs):
