@@ -170,7 +170,7 @@ class ProponenteAdmin(ImportExportModelAdmin):
     resource_class = ProponenteResource
 
     def get_resource_kwargs(self, request, *args, **kwargs):
-        """ Passing request to resource obj to control exported fields dynamically """
+        """ Passa o objeto request para **kwargs """
         return {'request': request}
 
     def muda_status_para_inscrito(self, request, queryset):
