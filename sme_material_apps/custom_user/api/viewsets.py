@@ -52,7 +52,7 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
             assert usuario.check_password(request.data.get('senha_atual')) is True, 'Senha atual divergente'
             senha1 = request.data.get('senha1')
             senha2 = request.data.get('senha2')
-            assert senha1 == senha2, 'Senha e confirmar senha divergem'
+            assert senha1 == senha2, 'Nova senha e confirmar nova senha divergentes'
             usuario.set_password(senha1)
             usuario.save()
             return Response({'detail': 'Senha atualizada com sucesso'}, status=status.HTTP_200_OK)
