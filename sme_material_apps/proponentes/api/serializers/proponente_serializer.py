@@ -11,6 +11,7 @@ from ....core.api.serializers.kit_serializer import KitLookupSerializer
 from ...api.serializers.oferta_de_material_serializer import (
     OfertaDeMaterialSerializer, OfertaDeMaterialLookupSerializer)
 from ...models import Proponente, Loja
+from ....custom_user.models import User
 
 log = logging.getLogger(__name__)
 
@@ -50,6 +51,15 @@ class ProponenteCreateSerializer(serializers.ModelSerializer):
         atualiza_coordenadas_lojas(proponente.lojas)
         log.info("Proponente {}, lojas: {}".format(proponente.uuid, lojas_lista))
         log.info("Criação de proponente finalizada!")
+        log.info("Criação de usuário do proponente")
+        usuario = User.objects.create_user(
+            email=proponente.email,
+            password="".join([n for n in proponente.cnpj if n.isdigit()])[:5],
+            first_name=proponente.responsavel
+        )
+        proponente.usuario = usuario
+        proponente.save()
+        log.info("Criação de usuário do proponente finalizada")
 
         return proponente
 

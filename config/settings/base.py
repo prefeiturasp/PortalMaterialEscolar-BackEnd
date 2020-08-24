@@ -1,6 +1,7 @@
 """
 Base settings to build other settings files upon.
 """
+import datetime
 from pathlib import Path
 
 import environ
@@ -91,6 +92,8 @@ THIRD_PARTY_APPS = [
     "django_use_email_as_username",
     "django_filters",
     "multiselectfield",
+    "import_export",
+    "rangefilter"
 ]
 
 LOCAL_APPS = [
@@ -261,7 +264,7 @@ LOGGING = {
     "formatters": {
         "verbose": {
             "format": "%(levelname)s %(asctime)s %(module)s "
-            "%(process)d %(thread)d %(message)s"
+                      "%(process)d %(thread)d %(message)s"
         }
     },
     "handlers": {
@@ -336,6 +339,13 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 
 }
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(hours=1),
+    'JWT_ALLOW_REFRESH': True,
+}
+
 # REDIS
 CACHES = {
     "default": {
@@ -357,4 +367,4 @@ sentry_sdk.init(
     integrations=[DjangoIntegration()]
 )
 
-GEOREF_API_URL=env('GEOREF_API_URL')
+GEOREF_API_URL = env('GEOREF_API_URL')
