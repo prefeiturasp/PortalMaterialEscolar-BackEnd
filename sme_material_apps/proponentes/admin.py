@@ -1,8 +1,8 @@
 from django.contrib import admin
 from django.utils.safestring import mark_safe
 from django.contrib import messages
+from django.contrib.admin import SimpleListFilter
 from import_export import resources
-from import_export.admin import ImportExportModelAdmin
 from import_export.fields import Field
 from rangefilter.filter import DateRangeFilter
 
@@ -165,6 +165,26 @@ class ProponenteResource(RequestModelResource):
         export_order = fields
 
 
+class TemAnexosReprovadosOuVencidosFilter(SimpleListFilter):
+    title = 'tem anexos reprovados ou vencidos'
+    parameter_name = 'anexos'
+
+    def lookups(self, request, model_admin):
+        return [('Reprovados ou Vencidos', 'Reprovados ou Vencidos'),
+                ('Reprovados', 'Reprovados'),
+                ('Vencidos', 'Vencidos')]
+
+    def queryset(self, request, queryset):
+        if self.value() == 'Reprovados ou Vencidos':
+            return queryset.filter(anexos__status__in=["REPROVADO", "VENCIDO"])
+        elif self.value() == 'Reprovados':
+            return queryset.filter(anexos__status="REPROVADO")
+        elif self.value() == 'Vencidos':
+            return queryset.filter(anexos__status="VENCIDO")
+        else:
+            return queryset
+
+
 @admin.register(Proponente)
 class ProponenteAdmin(admin.ModelAdmin):
     resource_class = ProponenteResource
@@ -274,7 +294,7 @@ class ProponenteAdmin(admin.ModelAdmin):
     ordering = ('-alterado_em',)
     search_fields = ('uuid', 'cnpj', 'razao_social', 'responsavel')
     filter_horizontal = ('kits',)
-    list_filter = ('status', ('criado_em', DateRangeFilter))
+    list_filter = ('status', ('criado_em', DateRangeFilter), TemAnexosReprovadosOuVencidosFilter)
     inlines = [MateriaisFornecidosInLine, LojasInLine, AnexosInLine]
     readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social', 'get_valor_total_kits')
     exclude = ('kits',)
