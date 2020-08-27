@@ -1,9 +1,11 @@
+import datetime
+import environ
 import logging
 
-from smtplib import SMTPServerDisconnected
-
-import environ
 from celery import shared_task
+from celery.schedules import crontab
+from celery.task import periodic_task
+from smtplib import SMTPServerDisconnected
 
 from ..core.helpers.enviar_email import enviar_email_html
 
@@ -54,3 +56,17 @@ def enviar_email_pendencia(email):
         None,
         email
     )
+
+
+@periodic_task(run_every=crontab(hour=16, minute=0))
+def enviar_email_documentos_proximos_vencimento():
+    from ..proponentes.models import Proponente
+    daqui_a_5_dias = datetime.date.today() + datetime.timedelta(days=5)
+    proponentes = Proponente.objects.filter(anexos__data_validade=daqui_a_5_dias)
+    for proponente in proponentes.all():
+        enviar_email_html(
+            'Documento(s) próximo(s) do vencimento',
+            'email_documentos_proximos_vencimento',
+            None,
+            proponente.email
+        )
