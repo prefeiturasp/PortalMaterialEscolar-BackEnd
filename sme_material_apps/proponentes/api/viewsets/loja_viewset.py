@@ -1,4 +1,3 @@
-from django.db.models.expressions import RawSQL
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
 from rest_framework import mixins, status
@@ -11,7 +10,6 @@ from ..serializers.loja_serializer import LojaUpdateFachadaSerializer
 from ..serializers.proponente_serializer import LojaCredenciadaSerializer
 from ...models.loja import Loja
 from ...models.proponente import Proponente
-from ...services import haversine
 
 
 class LojaUpdateFachadaViewSet(mixins.UpdateModelMixin, GenericViewSet):

@@ -86,9 +86,13 @@ class LojaCredenciadaSerializer(serializers.ModelSerializer):
     proponente = ProponenteOfertaMaterialSerializer(many=False)
     email = serializers.SerializerMethodField()
     distancia = serializers.SerializerMethodField()
+    responsavel = serializers.SerializerMethodField()
 
     def get_email(self, obj):
         return obj.proponente.email
+
+    def get_responsavel(self, obj):
+        return obj.proponente.responsavel
 
     def get_distancia(self, obj):
         if obj.latitude and obj.longitude:
