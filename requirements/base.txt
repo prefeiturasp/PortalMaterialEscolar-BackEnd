@@ -57,4 +57,10 @@ django-auditlog
 # Pegando última versão diretamente do repositório oficial.
 #-e git://github.com/jjkester/django-auditlog.git##egg=auditlog
 
+# PDF
+weasyprint==50
+django-sass-processor==0.8
+django-compressor==2.4
+libsass==0.19.4
+
 sentry-sdk

@@ -93,7 +93,8 @@ THIRD_PARTY_APPS = [
     "django_filters",
     "multiselectfield",
     "import_export",
-    "rangefilter"
+    "rangefilter",
+    "sass_processor",
 ]
 
 LOCAL_APPS = [
@@ -174,6 +175,7 @@ STATICFILES_DIRS = [str(APPS_DIR / "static")]
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "sass_processor.finders.CssFinder",
 ]
 
 # MEDIA
