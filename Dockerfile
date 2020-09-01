@@ -5,7 +5,6 @@ ADD . /code
 WORKDIR /code
 RUN apk --update --upgrade --no-cache add \
     cairo-dev pango-dev gdk-pixbuf
-RUN apt-get install libopenjp2-7
 RUN apk update && apk add postgresql-dev tzdata && \
   cp /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && \
   apk add --no-cache \
@@ -26,6 +25,7 @@ RUN apk update && apk add postgresql-dev tzdata && \
   tcl-dev \
   harfbuzz-dev \
   libffi-dev \
+  libopenjp2-7-dev \
   fribidi-dev && \
   python -m pip --no-cache install -U pip && \
   #    python -m pip --no-cache install Cython && \
