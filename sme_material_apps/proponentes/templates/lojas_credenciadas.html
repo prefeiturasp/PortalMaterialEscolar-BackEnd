@@ -20,6 +20,11 @@
     <div><span>E-mail: </span>{{ loja.proponente.email }}</div>
     <div><span>Telefone: </span>{{ loja.telefone }}</div>
     <hr/>
+  {% empty %}
+    <div>Os estabelecimentos estão em fase de realização cadastro, para
+      posterior análise. Em breve estarão disponíveis para acesso
+      neste portal.
+    </div>
   {% endfor %}
 </div>
 </body>
