@@ -1,5 +1,5 @@
 #FROM python:3.6-jessie
-FROM python:3.7-alpine
+FROM python:3.6-alpine3.8
 ENV PYTHONUNBUFFERED 1
 ADD . /code
 WORKDIR /code
