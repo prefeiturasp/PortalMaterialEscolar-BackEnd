@@ -1,9 +1,10 @@
 #FROM python:3.6-jessie
-FROM python:3.6-buster
+FROM python:3.7-alpine
 ENV PYTHONUNBUFFERED 1
 ADD . /code
 WORKDIR /code
-
+RUN apk --update --upgrade --no-cache add \
+    cairo-dev pango-dev gdk-pixbuf
 RUN apk update && apk add postgresql-dev tzdata && \
   cp /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && \
   apk add --no-cache \
