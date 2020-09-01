@@ -3,7 +3,8 @@ FROM python:3.6-alpine3.8
 ENV PYTHONUNBUFFERED 1
 ADD . /code
 WORKDIR /code
-
+RUN apk --update --upgrade --no-cache add \
+    cairo-dev pango-dev gdk-pixbuf
 RUN apk update && apk add postgresql-dev tzdata && \
   cp /usr/share/zoneinfo/America/Sao_Paulo /etc/localtime && \
   apk add --no-cache \
@@ -23,10 +24,9 @@ RUN apk update && apk add postgresql-dev tzdata && \
   tk-dev \
   tcl-dev \
   harfbuzz-dev \
-  cairo-dev \
-  pango-dev \
-  gdk-pixbuf \
   fribidi-dev && \
+  && apk add --no-cache --virtual .build-deps \
+  musl-dev gcc jpeg-dev zlib-dev libffi-dev && \
   python -m pip --no-cache install -U pip && \
   #    python -m pip --no-cache install Cython && \
   #    python -m pip --no-cache install numpy && \
