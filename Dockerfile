@@ -24,9 +24,8 @@ RUN apk update && apk add postgresql-dev tzdata && \
   tk-dev \
   tcl-dev \
   harfbuzz-dev \
+  libffi-dev \
   fribidi-dev && \
-  && apk add --no-cache --virtual .build-deps \
-  musl-dev gcc jpeg-dev zlib-dev libffi-dev && \
   python -m pip --no-cache install -U pip && \
   #    python -m pip --no-cache install Cython && \
   #    python -m pip --no-cache install numpy && \
