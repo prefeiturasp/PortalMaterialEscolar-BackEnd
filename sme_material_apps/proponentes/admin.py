@@ -257,6 +257,24 @@ class ProponenteAdmin(admin.ModelAdmin):
 
     gera_excel_action.short_description = f'Gerar excel'
 
+    def gera_excel_action(self, request, queryset):
+        csv_data = ProponenteResource().export(queryset)
+        return gera_excel(request, queryset, csv_data)
+
+    gera_excel_action.short_description = f'Gerar excel'
+
+    def task_email_documentos_proximos_vencimento_action(self, request, queryset):
+        from .tasks import enviar_email_documentos_proximos_vencimento
+        enviar_email_documentos_proximos_vencimento()
+
+    task_email_documentos_proximos_vencimento_action.short_description = f'Rodar task email docs prox. venc.'
+
+    def task_alterar_status_documentos_vencidos_action(self, request, queryset):
+        from .tasks import alterar_status_documentos_vencidos
+        alterar_status_documentos_vencidos()
+
+    task_alterar_status_documentos_vencidos_action.short_description = f'Rodar task alterar docs vencidos'
+
     def ultima_alteracao(self, obj):
         return obj.alterado_em.strftime("%d/%m/%Y %H:%M:%S")
 
@@ -288,7 +306,9 @@ class ProponenteAdmin(admin.ModelAdmin):
         'muda_status_para_credenciado',
         'atualiza_coordenadas_action',
         'envia_email_pendencias_action',
-        'gera_excel_action']
+        'gera_excel_action',
+        'task_email_documentos_proximos_vencimento_action',
+        'task_alterar_status_documentos_vencidos_action']
     list_display = ('protocolo', 'cnpj', 'razao_social', 'responsavel', 'telefone', 'email', 'status',
                     'ultima_alteracao', 'kits_fornecidos')
     ordering = ('-alterado_em',)
