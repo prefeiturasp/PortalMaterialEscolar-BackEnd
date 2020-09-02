@@ -68,8 +68,9 @@ class ProponentesViewSet(mixins.CreateModelMixin,
             kit_obj = Kit.objects.get(uuid=kit)
             proponente.kits.add(kit_obj)
 
-        proponente.status = Proponente.STATUS_ALTERADO
-        proponente.save()
+        if proponente.status != Proponente.STATUS_EM_PROCESSO:
+            proponente.status = Proponente.STATUS_ALTERADO
+            proponente.save()
 
         return Response(ProponenteSerializer(proponente).data, status=status.HTTP_200_OK)
 
