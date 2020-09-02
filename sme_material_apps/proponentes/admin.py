@@ -176,11 +176,11 @@ class TemAnexosReprovadosOuVencidosFilter(SimpleListFilter):
 
     def queryset(self, request, queryset):
         if self.value() == 'Reprovados ou Vencidos':
-            return queryset.filter(anexos__status__in=["REPROVADO", "VENCIDO"])
+            return queryset.filter(anexos__status__in=["REPROVADO", "VENCIDO"]).distinct()
         elif self.value() == 'Reprovados':
-            return queryset.filter(anexos__status="REPROVADO")
+            return queryset.filter(anexos__status="REPROVADO").distinct()
         elif self.value() == 'Vencidos':
-            return queryset.filter(anexos__status="VENCIDO")
+            return queryset.filter(anexos__status="VENCIDO").distinct()
         else:
             return queryset
 
