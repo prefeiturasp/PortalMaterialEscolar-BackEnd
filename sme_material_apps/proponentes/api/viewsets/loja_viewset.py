@@ -1,4 +1,3 @@
-from django.http import HttpResponse
 from django.template.loader import render_to_string
 from rest_framework.exceptions import ValidationError
 from rest_framework.response import Response
@@ -6,9 +5,9 @@ from rest_framework import mixins, status
 from rest_framework.decorators import action
 from rest_framework.permissions import AllowAny
 from rest_framework.viewsets import GenericViewSet
-from weasyprint import HTML
 
 from sme_material_apps.core.models import Kit
+from sme_material_apps.utils.html_to_pdf_response import html_to_pdf_response
 from ..serializers.loja_serializer import LojaUpdateFachadaSerializer
 from ..serializers.proponente_serializer import LojaCredenciadaSerializer
 from ...models.loja import Loja
@@ -65,7 +64,4 @@ class LojaViewSet(mixins.ListModelMixin, GenericViewSet):
             'lojas_credenciadas.html',
             {'lojas': self.get_queryset()}
         )
-        pdf_file = HTML(string=html_string, base_url=request.build_absolute_uri()).write_pdf()
-        response = HttpResponse(pdf_file, content_type='application/pdf')
-        response['Content-Disposition'] = f'filename="lojas_credenciadas.pdf"'
-        return response
+        return html_to_pdf_response(html_string, f'lojas_credenciadas.pdf')
