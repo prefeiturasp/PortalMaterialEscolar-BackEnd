@@ -3,16 +3,26 @@
 
 <html>
 <head>
-  <link rel="stylesheet" href="{% sass_src 'css/lojas-credenciadas.scss' %}">
+  <style>
+    .lojas-credenciadas {
+      border: 1px solid #EEEEEE;
+      padding: 20px;
+    }
+
+    .lojas-credenciadas span {
+      font-weight: bold;
+    }
+  </style>
+  <link rel="stylesheet" href="{% sass_src 'css/lojas-credenciadas.scss' %}" type="text/css">
   <link rel="stylesheet" href="{% sass_src 'css/cabecalho.scss' %}" type="text/css">
 </head>
+<body>
 <header class="header">
   <section class="titulo-e-logo">
     <img src="{% static 'images/LOGO_PB_POSITIVO.png' %}" alt=""/>
     <h1>Lista de Fornecedores Credenciados</h1>
   </section>
 </header>
-<body>
 <div class="lojas-credenciadas">
   {% for loja in lojas %}
     <div><span>Nome da loja: </span>{{ loja.nome_fantasia }}</div>
