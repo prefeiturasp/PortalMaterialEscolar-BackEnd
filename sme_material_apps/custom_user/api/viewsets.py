@@ -1,7 +1,10 @@
 import datetime
+import environ
+import logging
 
 from django.contrib.auth.tokens import PasswordResetTokenGenerator
 from django.core.exceptions import ObjectDoesNotExist
+from django.utils.safestring import mark_safe
 from rest_framework import status, permissions
 from rest_framework.decorators import action
 from rest_framework.mixins import RetrieveModelMixin, ListModelMixin, UpdateModelMixin
@@ -12,6 +15,10 @@ from rest_framework.viewsets import GenericViewSet
 from sme_material_apps.custom_user.api.serializers import UserSerializer
 from sme_material_apps.custom_user.models import User
 from sme_material_apps.proponentes.models import Proponente
+from sme_material_apps.proponentes.tasks import enviar_email_recuperar_senha
+from sme_material_apps.utils.ofucar_email import ofuscar_email
+
+log = logging.getLogger(__name__)
 
 
 class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericViewSet):
@@ -33,7 +40,7 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
         try:
             usuario = User.objects.get(id=usuario_id)
         except ObjectDoesNotExist:
-            return Response({'detail': 'Não existe usuário com este e-mail ou RF'},
+            return Response({'detail': 'Não existe usuário com este e-mail'},
                             status=status.HTTP_400_BAD_REQUEST)
         token_generator = PasswordResetTokenGenerator()
         if token_generator.check_token(usuario, token_reset):
@@ -58,3 +65,24 @@ class UserViewSet(RetrieveModelMixin, ListModelMixin, UpdateModelMixin, GenericV
             return Response({'detail': 'Senha atualizada com sucesso'}, status=status.HTTP_200_OK)
         except AssertionError as e:
             return Response({'detail': str(e)}, status=status.HTTP_400_BAD_REQUEST)
+
+    @action(detail=False, url_path='recuperar-senha/(?P<email>.*)')
+    def recuperar_senha(self, request, email=None):
+        try:
+            usuario = User.objects.get(email=email)
+        except ObjectDoesNotExist:
+            return Response({'detail': 'Não existe usuário com este e-mail'},
+                            status=status.HTTP_400_BAD_REQUEST)
+        log.info(f'Enviando recuperação de senha enviada para {usuario.email}.')
+        token_generator = PasswordResetTokenGenerator()
+        token = token_generator.make_token(usuario)
+        env = environ.Env()
+        url = f'https://{env("SERVER_NAME")}/fornecedor/recuperar-senha?id={str(usuario.id)}&confirmationKey={token}'
+        enviar_email_recuperar_senha.delay(
+            usuario.email,
+            {
+                'url': url
+            }
+        )
+        return Response({'email': f'{ofuscar_email(usuario.email)}'},
+                        status=status.HTTP_200_OK)
