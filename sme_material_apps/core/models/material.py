@@ -1,6 +1,9 @@
+import logging
 from django.db import models
 
 from sme_material_apps.core.models_abstracts import ModeloBase
+
+log = logging.getLogger(__name__)
 
 
 class Material(ModeloBase):

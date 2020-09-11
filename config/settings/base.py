@@ -1,6 +1,7 @@
 """
 Base settings to build other settings files upon.
 """
+import datetime
 from pathlib import Path
 
 import environ
@@ -90,6 +91,10 @@ THIRD_PARTY_APPS = [
     "rest_framework_swagger",
     "django_use_email_as_username",
     "django_filters",
+    "multiselectfield",
+    "import_export",
+    "rangefilter",
+    "sass_processor",
 ]
 
 LOCAL_APPS = [
@@ -170,6 +175,7 @@ STATICFILES_DIRS = [str(APPS_DIR / "static")]
 STATICFILES_FINDERS = [
     "django.contrib.staticfiles.finders.FileSystemFinder",
     "django.contrib.staticfiles.finders.AppDirectoriesFinder",
+    "sass_processor.finders.CssFinder",
 ]
 
 # MEDIA
@@ -260,7 +266,7 @@ LOGGING = {
     "formatters": {
         "verbose": {
             "format": "%(levelname)s %(asctime)s %(module)s "
-            "%(process)d %(thread)d %(message)s"
+                      "%(process)d %(thread)d %(message)s"
         }
     },
     "handlers": {
@@ -335,6 +341,13 @@ REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 
 }
+
+JWT_AUTH = {
+    'JWT_EXPIRATION_DELTA': datetime.timedelta(hours=1),
+    'JWT_REFRESH_EXPIRATION_DELTA': datetime.timedelta(hours=1),
+    'JWT_ALLOW_REFRESH': True,
+}
+
 # REDIS
 CACHES = {
     "default": {
@@ -356,4 +369,4 @@ sentry_sdk.init(
     integrations=[DjangoIntegration()]
 )
 
-GEOREF_API_URL=env('GEOREF_API_URL')
+GEOREF_API_URL = env('GEOREF_API_URL')

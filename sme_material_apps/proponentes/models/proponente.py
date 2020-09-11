@@ -1,26 +1,28 @@
-import environ
+import datetime
 import logging
 
+import environ
+from auditlog.models import AuditlogHistoryField
+from auditlog.registry import auditlog
 from brazilnum.cnpj import validate_cnpj
 from django.core import validators
 from django.db import models
 from django.db.models.signals import post_save
 from django.dispatch import receiver
 
-from auditlog.models import AuditlogHistoryField
-from auditlog.registry import auditlog
 from sme_material_apps.core.helpers.validar_email import email_valido
-from sme_material_apps.core.models_abstracts import ModeloBase
-
-from ..tasks import (enviar_email_confirmacao_cadastro,
-                     enviar_email_confirmacao_pre_cadastro)
+from sme_material_apps.core.models import Kit
+from sme_material_apps.core.models_abstracts import ModeloBase, TemObservacao
 from .tipo_documento import TipoDocumento
 from .validators import cep_validation, cnpj_validation, phone_validation
+from ..tasks import (enviar_email_confirmacao_cadastro,
+                     enviar_email_confirmacao_pre_cadastro, enviar_email_pendencia)
+from ...custom_user.models import User
 
 log = logging.getLogger(__name__)
 
 
-class Proponente(ModeloBase):
+class Proponente(ModeloBase, TemObservacao):
     historico = AuditlogHistoryField()
 
     UF_CHOICES = (
@@ -61,6 +63,7 @@ class Proponente(ModeloBase):
     STATUS_PENDENTE = 'PENDENTE'
     STATUS_EM_ANALISE = 'EM_ANALISE'
     STATUS_CREDENCIADO = 'CREDENCIADO'
+    STATUS_ALTERADO = 'ALTERADO'
 
     STATUS_NOMES = {
         STATUS_INSCRITO: 'Inscrito',
@@ -70,7 +73,8 @@ class Proponente(ModeloBase):
         STATUS_REPROVADO: 'Reprovado',
         STATUS_PENDENTE: 'Pendente',
         STATUS_EM_ANALISE: 'Em análise',
-        STATUS_CREDENCIADO: 'Credenciado'
+        STATUS_CREDENCIADO: 'Credenciado',
+        STATUS_ALTERADO: 'Alterado'
     }
 
     STATUS_CHOICES = (
@@ -82,10 +86,11 @@ class Proponente(ModeloBase):
         (STATUS_PENDENTE, STATUS_NOMES[STATUS_PENDENTE]),
         (STATUS_EM_ANALISE, STATUS_NOMES[STATUS_EM_ANALISE]),
         (STATUS_CREDENCIADO, STATUS_NOMES[STATUS_CREDENCIADO]),
+        (STATUS_ALTERADO, STATUS_NOMES[STATUS_ALTERADO])
     )
 
     cnpj = models.CharField(
-        "CNPJ", max_length=20, validators=[cnpj_validation], blank=True, null=True, default="", unique=True
+        "CNPJ", max_length=20, validators=[cnpj_validation], default="", unique=True
     )
     razao_social = models.CharField("Razão Social", max_length=255, blank=True, null=True)
 
@@ -140,11 +145,12 @@ class Proponente(ModeloBase):
     )
 
     email = models.CharField(
-        "E-mail", max_length=255, validators=[validators.EmailValidator()], blank=True, null=True, default="",
-        unique=True
+        "E-mail", max_length=255, validators=[validators.EmailValidator()], default="", unique=True
     )
 
     responsavel = models.CharField("Responsável", max_length=255, blank=True, null=True)
+
+    kits = models.ManyToManyField(Kit, blank=True, related_name='proponentes')
 
     status = models.CharField(
         'status',
@@ -152,6 +158,8 @@ class Proponente(ModeloBase):
         choices=STATUS_CHOICES,
         default=STATUS_EM_PROCESSO
     )
+
+    usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
     def __str__(self):
         return f"{self.responsavel} - {self.email} - {self.telefone}"
@@ -168,7 +176,12 @@ class Proponente(ModeloBase):
     def comunicar_cadastro(self):
         if self.email:
             log.info(f'Enviando confirmação de cadastro (Protocolo:{self.protocolo}) enviada para {self.email}.')
-            enviar_email_confirmacao_cadastro.delay(self.email, {'protocolo': self.protocolo})
+            enviar_email_confirmacao_cadastro.delay(self.email, {'email': self.email, 'protocolo': self.protocolo})
+
+    def comunicar_pendencia(self):
+        if self.email:
+            log.info(f'Enviando e-mail de pendência no cadastro:{self.protocolo}) enviada para {self.email}.')
+            enviar_email_pendencia.delay(self.email)
 
     @property
     def protocolo(self):
@@ -177,6 +190,51 @@ class Proponente(ModeloBase):
     @property
     def arquivos_anexos(self):
         return self.anexos.all()
+
+    @property
+    def valor_total_kits(self):
+        kits_valores = []
+        for kit in self.kits.all():
+            valor_kit = 0
+            for material_kit in kit.materiais_do_kit.all():
+                valor_kit += self.ofertas_de_materiais.get(material=material_kit.material).preco * material_kit.unidades
+            kits_valores.append({'kit': kit, 'valor_kit': valor_kit})
+        return kits_valores
+
+    def get_preco_material(self, material):
+        if self.ofertas_de_materiais.filter(material__nome=material).exists():
+            return self.ofertas_de_materiais.get(material__nome=material).preco
+        return None
+
+    def get_valor_kit(self, kit):
+        if self.kits.filter(nome=kit).exists():
+            kit_obj = self.kits.get(nome=kit)
+            valor_kit = 0
+            for material_kit in kit_obj.materiais_do_kit.all():
+                valor_kit += self.ofertas_de_materiais.get(material=material_kit.material).preco * material_kit.unidades
+            return valor_kit
+        return None
+
+    def get_documento_link(self, request, substring):
+        documento = TipoDocumento.objects.get(nome__icontains=substring)
+        if self.arquivos_anexos.filter(tipo_documento=documento).exists():
+            return request.get_host() + self.arquivos_anexos.get(tipo_documento=documento).arquivo.url
+        return None
+
+    def get_documento_data_validade(self, substring):
+        documento = TipoDocumento.objects.get(nome__icontains=substring)
+        if (self.arquivos_anexos.filter(tipo_documento=documento).exists() and
+            self.arquivos_anexos.get(tipo_documento=documento).data_validade):
+            return self.arquivos_anexos.get(tipo_documento=documento).data_validade.strftime("%d/%m/%Y")
+        return None
+
+    def get_documento_dias_vencimento(self, substring):
+        documento = TipoDocumento.objects.get(nome__icontains=substring)
+        if (self.arquivos_anexos.filter(tipo_documento=documento).exists() and
+            self.arquivos_anexos.get(tipo_documento=documento).data_validade):
+            delta = self.arquivos_anexos.get(tipo_documento=documento).data_validade - datetime.date.today()
+            return delta.days
+        return None
 
     @classmethod
     def cnpj_ja_cadastrado(cls, cnpj):
