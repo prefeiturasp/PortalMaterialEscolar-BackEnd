@@ -16,7 +16,7 @@ class KitsViewSet(viewsets.ReadOnlyModelViewSet):
     search_fields = ('uuid', 'id', 'nome')
 
     def get_queryset(self):
-        return self.queryset
+        return self.get_queryset()
 
     def get_serializer_class(self):
         return KitSerializer
