@@ -352,7 +352,8 @@ class LojaAdmin(admin.ModelAdmin):
                                                             'coordenadas no cadastro do proponente.')
         super(LojaAdmin, self).save_model(request, obj, form, change)
 
-    list_display = ('protocolo', 'nome_fantasia', 'fachada', 'cep', 'endereco', 'numero', 'complemento', 'bairro')
+    list_display = ('protocolo', 'nome_fantasia', 'fachada', 'cep', 'endereco', 'numero', 'complemento', 'bairro',
+                    'site')
     ordering = ('nome_fantasia',)
     search_fields = ('proponente__uuid', 'nome_fantasia',)
     list_filter = ('bairro',)
