@@ -29,7 +29,7 @@ pipeline {
                   -Dsonar.projectKey=PortalMaterialEscolar-BackEnd \
                   -Dsonar.sources=. \
                   -Dsonar.host.url=http://sonar.sme.prefeitura.sp.gov.br \
-                  -Dsonar.login=cb4346508d39ccf9fca7d443779c39ab8ca615d3'
+                  -Dsonar.login=4fa58b29736eb66aa0aba3b9afed9e452834977b'
             }
        }
          

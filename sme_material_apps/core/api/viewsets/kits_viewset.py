@@ -14,9 +14,3 @@ class KitsViewSet(viewsets.ReadOnlyModelViewSet):
     filter_backends = (SearchFilter, OrderingFilter)
     ordering_fields = ('nome',)
     search_fields = ('uuid', 'id', 'nome')
-
-    def get_queryset(self):
-        return self.queryset
-
-    def get_serializer_class(self):
-        return KitSerializer
