@@ -40,16 +40,20 @@ class LojaViewSet(mixins.ListModelMixin, GenericViewSet):
         latitude = self.request.query_params.get('latitude', None)
         longitude = self.request.query_params.get('longitude', None)
         queryset = self.get_queryset()
-        try:
-            kit = Kit.objects.get(uuid=request.data.get('kit'))
-        except Kit.DoesNotExist:
-            raise ValidationError('Kit não encontrado.')
+        if request.data.get('tipo_busca', None) == 'kits':
+            try:
+                kit = Kit.objects.get(uuid=request.data.get('kit'))
+            except Kit.DoesNotExist:
+                raise ValidationError('Kit não encontrado.')
 
-        materiais = [m.material.nome for m in kit.materiais_do_kit.all()]
-        for material in materiais:
+            materiais = [m.material.nome for m in kit.materiais_do_kit.all()]
+            for material in materiais:
+                queryset = queryset.filter(
+                    proponente__ofertas_de_materiais__material__nome=material
+                )
+        elif request.data.get('tipo_busca', None) == 'itens':
             queryset = queryset.filter(
-                proponente__ofertas_de_materiais__material__nome=material
-            )
+                proponente__ofertas_de_materiais__material__nome__in=request.data.get('materiais')).distinct()
 
         return Response(
             LojaCredenciadaSerializer(
