@@ -1,7 +1,7 @@
 from django.db import models
 
 from sme_material_apps.core.models_abstracts import ModeloBase, SingletonModel
-from proponentes.models import validators
+from django.core import validators
 
 
 class Parametros(SingletonModel, ModeloBase):
