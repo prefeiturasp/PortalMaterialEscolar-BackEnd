@@ -9,7 +9,7 @@ class Parametros(SingletonModel, ModeloBase):
     instrucao_normativa = models.FileField('Instrução Normativa', blank=True, null=True)
     especificacoes_itens_kits = models.FileField("Especificações de itens dos kits", blank=True, null=True)
     email_sme = models.CharField(
-        "E-mail núcleo para reportar vencimentos de documentos.", max_length=255, validators=[validators.EmailValidator()], default="", unique=True
+        "E-mail núcleo.", max_length=255, validators=[validators.EmailValidator()], default="", unique=True
     )
 
     def __str__(self):
