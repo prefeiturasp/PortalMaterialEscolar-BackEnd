@@ -36,4 +36,4 @@ class ParametrosAdmin(admin.ModelAdmin):
 
     list_display = ('id', 'edital', 'instrucao_normativa', 'especificacoes_itens_kits','alterado_em')
     readyonly_field = ('alterado_em',)
-    fields = ('edital', 'instrucao_normativa', 'especificacoes_itens_kits')
+    fields = ('edital', 'instrucao_normativa', 'especificacoes_itens_kits', 'email_sme')
