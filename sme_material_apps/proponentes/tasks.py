@@ -80,13 +80,16 @@ def enviar_email_documentos_proximos_vencimento():
     from ..core.models import Parametros
 
     daqui_a_5_dias = datetime.date.today() + datetime.timedelta(days=5)
-    proponentes = Proponente.objects.filter(
-        anexos__data_validade=daqui_a_5_dias).filter(
+    proponentes_anexos_obrigatorios_sme = Proponente.objects.filter(
+        anexos__data_validade=daqui_a_5_dias, anexos__tipo_documento__obrigatorio_sme=True).filter(
         status__in=[Proponente.STATUS_EM_ANALISE, Proponente.STATUS_CREDENCIADO, Proponente.STATUS_APROVADO]
     ).distinct()
 
-    proponentes_anexos_obrigatorios_sme = proponentes.filter(anexos__tipo_documento__obrigatorio_sme=True)
-    proponentes_anexos = proponentes.filter(anexos__tipo_documento__obrigatorio_sme=False)    
+    
+    proponentes_anexos = Proponente.objects.filter(
+        anexos__data_validade=daqui_a_5_dias, anexos__tipo_documento__obrigatorio_sme=False).filter(
+        status__in=[Proponente.STATUS_EM_ANALISE, Proponente.STATUS_CREDENCIADO, Proponente.STATUS_APROVADO]
+    ).distinct()
 
     log.info("Proponentes com anexos próximos do fim da validade: %s", proponentes_anexos.count())
     for proponente in proponentes_anexos.all():
