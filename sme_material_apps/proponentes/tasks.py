@@ -77,17 +77,37 @@ def enviar_email_pendencia(email):
 @periodic_task(run_every=crontab(hour=16, minute=0))
 def enviar_email_documentos_proximos_vencimento():
     from ..proponentes.models import Proponente
+    from ..core.models import Parametros
+
     daqui_a_5_dias = datetime.date.today() + datetime.timedelta(days=5)
-    proponentes = Proponente.objects.filter(
-        anexos__data_validade=daqui_a_5_dias).filter(
+    proponentes_anexos_obrigatorios_sme = Proponente.objects.filter(
+        anexos__data_validade=daqui_a_5_dias, anexos__tipo_documento__obrigatorio_sme=True).filter(
         status__in=[Proponente.STATUS_EM_ANALISE, Proponente.STATUS_CREDENCIADO, Proponente.STATUS_APROVADO]
     ).distinct()
-    for proponente in proponentes.all():
+
+    
+    proponentes_anexos = Proponente.objects.filter(
+        anexos__data_validade=daqui_a_5_dias, anexos__tipo_documento__obrigatorio_sme=False).filter(
+        status__in=[Proponente.STATUS_EM_ANALISE, Proponente.STATUS_CREDENCIADO, Proponente.STATUS_APROVADO]
+    ).distinct()
+
+    log.info("Proponentes com anexos próximos do fim da validade: %s", proponentes_anexos.count())
+    for proponente in proponentes_anexos.all():
         enviar_email_html(
             'Documento(s) próximo(s) do vencimento',
             'email_documentos_proximos_vencimento',
-            None,
+            {"path": "fornecedor/login"},
             proponente.email
+        )
+
+    log.info("Proponentes com anexos obrigatórios sme próximos do fim da validade: %s", proponentes_anexos_obrigatorios_sme.count())
+    email_sme = Parametros.objects.first().email_sme if Parametros.objects.first() else ''
+    for proponente in proponentes_anexos_obrigatorios_sme.all():
+        enviar_email_html(
+            'Documento(s) próximo(s) do vencimento',
+            'email_documentos_proximos_vencimento',
+            {"path": "admin"},
+            email_sme
         )
 
 
