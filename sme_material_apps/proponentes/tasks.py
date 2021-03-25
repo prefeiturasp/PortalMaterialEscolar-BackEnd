@@ -85,7 +85,6 @@ def enviar_email_documentos_proximos_vencimento():
         status__in=[Proponente.STATUS_EM_ANALISE, Proponente.STATUS_CREDENCIADO, Proponente.STATUS_APROVADO]
     ).distinct()
 
-    
     proponentes_anexos = Proponente.objects.filter(
         anexos__data_validade=daqui_a_5_dias, anexos__tipo_documento__obrigatorio_sme=False).filter(
         status__in=[Proponente.STATUS_EM_ANALISE, Proponente.STATUS_CREDENCIADO, Proponente.STATUS_APROVADO]
@@ -96,17 +95,18 @@ def enviar_email_documentos_proximos_vencimento():
         enviar_email_html(
             'Documento(s) próximo(s) do vencimento',
             'email_documentos_proximos_vencimento',
-            {"path": "fornecedor/login"},
+            None,
             proponente.email
         )
 
-    log.info("Proponentes com anexos obrigatórios sme próximos do fim da validade: %s", proponentes_anexos_obrigatorios_sme.count())
+    log.info("Proponentes com anexos obrigatórios sme próximos do fim da validade: %s",
+             proponentes_anexos_obrigatorios_sme.count())
     email_sme = Parametros.objects.first().email_sme if Parametros.objects.first() else ''
     for proponente in proponentes_anexos_obrigatorios_sme.all():
         enviar_email_html(
-            'Documento(s) próximo(s) do vencimento',
-            'email_documentos_proximos_vencimento',
-            {"path": "admin"},
+            f'[Material] Documento(s) próximo(s) do vencimento para o protocolo {proponente.protocolo}',
+            'email_documentos_proximos_vencimento_nucleo',
+            {"proponente": f'{proponente.razao_social} - {proponente.cnpj}'},
             email_sme
         )
 
