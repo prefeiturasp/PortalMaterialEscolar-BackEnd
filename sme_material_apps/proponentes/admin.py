@@ -6,6 +6,7 @@ from import_export import resources
 from import_export.fields import Field
 from rangefilter.filter import DateRangeFilter
 
+from .forms import AnexoForm
 from .models import (Proponente, OfertaDeMaterial, Loja, Anexo, TipoDocumento)
 from .services import muda_status_de_proponentes, atualiza_coordenadas, envia_email_pendencias, gera_excel
 
@@ -21,7 +22,9 @@ class LojasInLine(admin.StackedInline):
 
 
 class AnexosInLine(admin.TabularInline):
+    form = AnexoForm
     model = Anexo
+
     extra = 1  # Quantidade de linhas que serão exibidas.
 
 
