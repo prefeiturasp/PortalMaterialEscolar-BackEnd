@@ -58,27 +58,19 @@ pipeline {
                 script{
                     if ( env.branchname == 'main' ||  env.branchname == 'master' || env.branchname == 'homolog' || env.branchname == 'release' ) {
                         sendTelegram("🤩 [Deploy ${env.branchname}] Job Name: ${JOB_NAME} \nBuild: ${BUILD_DISPLAY_NAME} \nMe aprove! \nLog: \n${env.BUILD_URL}")
-                        timeout(time: 24, unit: "HOURS") {
-                            input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: 'ollyver_ottoboni, kelwy_oliveira, anderson_morais'
-                        }
-                        withCredentials([file(credentialsId: "${kubeconfig}", variable: 'config')]){
-                            sh('cp $config '+"$home"+'/.kube/config')
-                            sh 'kubectl rollout restart deployment/materialescolar-backend -n sme-materialescolar'
-                            sh 'kubectl rollout restart deployment/materialescolar-beat -n sme-materialescolar'
-                            sh 'kubectl rollout restart deployment/materialescolar-celery -n sme-materialescolar'
-                            sh 'kubectl rollout restart deployment/materialescolar-flower -n sme-materialescolar'
-                            sh('rm -f '+"$home"+'/.kube/config')
+                        withCredentials([string(credentialsId: 'aprovadores-materialescolar', variable: 'aprovadores')]) {
+                            timeout(time: 24, unit: "HOURS") {
+                                input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: '$aprovadores'
+                            }
                         }
                     }
-                    else{
-                        withCredentials([file(credentialsId: "${kubeconfig}", variable: 'config')]){
-                            sh('cp $config '+"$home"+'/.kube/config')
-                            sh 'kubectl rollout restart deployment/materialescolar-backend -n sme-materialescolar'
-                            sh 'kubectl rollout restart deployment/materialescolar-beat -n sme-materialescolar'
-                            sh 'kubectl rollout restart deployment/materialescolar-celery -n sme-materialescolar'
-                            sh 'kubectl rollout restart deployment/materialescolar-flower -n sme-materialescolar'
-                            sh('rm -f '+"$home"+'/.kube/config')
-                        }
+                    withCredentials([file(credentialsId: "${kubeconfig}", variable: 'config')]){
+                        sh('cp $config '+"$home"+'/.kube/config')
+                        sh 'kubectl rollout restart deployment/materialescolar-backend -n sme-materialescolar'
+                        sh 'kubectl rollout restart deployment/materialescolar-beat -n sme-materialescolar'
+                        sh 'kubectl rollout restart deployment/materialescolar-celery -n sme-materialescolar'
+                        sh 'kubectl rollout restart deployment/materialescolar-flower -n sme-materialescolar'
+                        sh('rm -f '+"$home"+'/.kube/config')
                     }
                 }
             }           
