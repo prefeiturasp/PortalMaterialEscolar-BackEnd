@@ -39,15 +39,11 @@ pipeline {
           steps {
             script {
               imagename1 = "registry.sme.prefeitura.sp.gov.br/${env.branchname}/materialescolar-backend"
-              //imagename2 = "registry.sme.prefeitura.sp.gov.br/${env.branchname}/sme-outra"
               dockerImage1 = docker.build(imagename1, "-f Dockerfile .")
-              //dockerImage2 = docker.build(imagename2, "-f Dockerfile_outro .")
               docker.withRegistry( 'https://registry.sme.prefeitura.sp.gov.br', registryCredential ) {
               dockerImage1.push()
-              //dockerImage2.push()
               }
               sh "docker rmi $imagename1"
-              //sh "docker rmi $imagename2"
             }
           }
         }
@@ -60,7 +56,7 @@ pipeline {
                         sendTelegram("🤩 [Deploy ${env.branchname}] Job Name: ${JOB_NAME} \nBuild: ${BUILD_DISPLAY_NAME} \nMe aprove! \nLog: \n${env.BUILD_URL}")
                         withCredentials([string(credentialsId: 'aprovadores-materialescolar', variable: 'aprovadores')]) {
                             timeout(time: 24, unit: "HOURS") {
-                                input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: '$aprovadores'
+                                input message: 'Deseja realizar o deploy?', ok: 'SIM', submitter: "${aprovadores}"
                             }
                         }
                     }
