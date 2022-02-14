@@ -349,6 +349,14 @@ class LojaAdmin(admin.ModelAdmin):
 
     fachada.allow_tags = True
 
+    @staticmethod
+    @mark_safe
+    def comprovante(loja):
+        comprovante = loja.comprovante_end
+        return f'<img src="{comprovante.url}" width="64px"/>' if comprovante else ""
+
+    comprovante.allow_tags = True
+
     def save_model(self, request, obj, form, change):
         if not obj.latitude:
             messages.add_message(request, messages.WARNING, 'Ao cadastrar uma loja nova é necessário atualizar as '
@@ -356,7 +364,7 @@ class LojaAdmin(admin.ModelAdmin):
         super(LojaAdmin, self).save_model(request, obj, form, change)
 
     list_display = ('protocolo', 'nome_fantasia', 'fachada', 'cep', 'endereco', 'numero', 'complemento', 'bairro',
-                    'site')
+                    'site', 'comprovante_end')
     ordering = ('nome_fantasia',)
     search_fields = ('proponente__uuid', 'nome_fantasia',)
     list_filter = ('bairro',)
