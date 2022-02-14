@@ -319,7 +319,7 @@ class ProponenteAdmin(admin.ModelAdmin):
     filter_horizontal = ('kits',)
     list_filter = ('status', ('criado_em', DateRangeFilter), TemAnexosReprovadosOuVencidosFilter)
     inlines = [MateriaisFornecidosInLine, LojasInLine, AnexosInLine]
-    readonly_fields = ('uuid', 'id', 'cnpj', 'razao_social', 'get_valor_total_kits')
+    readonly_fields = ('uuid', 'id', 'cnpj', 'get_valor_total_kits')
     exclude = ('kits',)
 
 
