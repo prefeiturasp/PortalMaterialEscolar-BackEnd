@@ -161,8 +161,6 @@ class Proponente(ModeloBase, TemObservacao):
 
     usuario = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
 
-    comprovante_end = models.FileField('Comprovante de Endereço', blank=True, null=True)
-
     def __str__(self):
         return f"{self.responsavel} - {self.email} - {self.telefone}"
 
