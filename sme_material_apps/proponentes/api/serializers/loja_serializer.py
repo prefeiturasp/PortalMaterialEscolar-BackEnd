@@ -1,13 +1,21 @@
+import environ
 from rest_framework import serializers
 
 from ...models import Loja
 
+env = environ.Env()
+SERVER_NAME = f'{env("SERVER_NAME")}'
+
 
 class LojaSerializer(serializers.ModelSerializer):
     email = serializers.SerializerMethodField()
+    comprovante_end = serializers.SerializerMethodField('get_comprovante_end')
 
     def get_email(self, obj):
         return obj.proponente.email
+
+    def get_comprovante_end(self, obj):
+        return '%s%s' % (SERVER_NAME, obj.comprovante_end.url)
 
     class Meta:
         model = Loja
