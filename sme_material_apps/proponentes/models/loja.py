@@ -36,6 +36,8 @@ class Loja(ModeloBase):
 
     site = models.URLField(blank=True, null=True)
 
+    comprovante_end = models.FileField('Comprovante de Endereço', blank=True, null=True)
+
     def __str__(self):
         return f"{self.nome_fantasia}"
 
