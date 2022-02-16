@@ -15,7 +15,10 @@ class LojaSerializer(serializers.ModelSerializer):
         return obj.proponente.email
 
     def get_comprovante_end(self, obj):
-        return '%s%s' % (SERVER_NAME, obj.comprovante_end.url)
+        if bool(obj.comprovante_endereco):
+            return '%s%s' % (SERVER_NAME, obj.comprovante_end.url)
+        else:
+            return None
 
     class Meta:
         model = Loja
