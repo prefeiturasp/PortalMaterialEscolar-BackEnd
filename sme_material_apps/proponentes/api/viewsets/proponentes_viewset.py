@@ -1,5 +1,7 @@
+import base64
 import logging
 
+from django.core.files.base import ContentFile
 from django_filters import rest_framework as filters
 from rest_framework import mixins, status
 from rest_framework.decorators import action
@@ -96,6 +98,13 @@ class ProponentesViewSet(mixins.CreateModelMixin,
                 loja_obj.nome_fantasia = loja.get('nome_fantasia')
                 loja_obj.telefone = loja.get('telefone')
                 loja_obj.site = loja.get('site')
+
+                if loja.get('comprovante_end') is not None:
+                    format, imgstr = loja.get('comprovante_end').split(';base64,')
+                    ext = format.split('/')[-1]
+                    data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
+                    loja_obj.comprovante_end.save('comprovante_endereco_loja.' + ext, data)
+
                 loja_obj.save()
             else:
                 atributos_extras = ['proponente', 'uuid', 'id', 'email', 'criado_em',
