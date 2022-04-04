@@ -17,6 +17,7 @@ from ..serializers.proponente_serializer import ProponenteSerializer, Proponente
 
 from ...models import Proponente, OfertaDeMaterial, Loja
 from ...services import atualiza_coordenadas_lojas
+from ....utils.base64ToFile import base64ToFile
 
 log = logging.getLogger(__name__)
 
@@ -100,11 +101,8 @@ class ProponentesViewSet(mixins.CreateModelMixin,
                 loja_obj.site = loja.get('site')
 
                 if loja.get('comprovante_end') is not None:
-                    format, imgstr = loja.get('comprovante_end').split(';base64,')
-                    ext = format.split('/')[-1]
-                    data = ContentFile(base64.b64decode(imgstr), name='temp.' + ext)
-                    loja_obj.comprovante_end.save('comprovante_endereco_loja.' + ext, data)
-
+                    file = base64ToFile(loja.get('comprovante_end'))
+                    loja_obj.comprovante_end.save('comprovante_endereco_loja.' + file['ext'], file['data'])
                 loja_obj.save()
             else:
                 atributos_extras = ['proponente', 'uuid', 'id', 'email', 'criado_em',
@@ -112,7 +110,10 @@ class ProponentesViewSet(mixins.CreateModelMixin,
                                     'uf', 'firstName']
                 for attr in atributos_extras:
                     loja.pop(attr, '')
+                comprovante = loja.pop('comprovante_end', '')
                 loja_object = LojaCreateSerializer().create(loja)
+                file = base64ToFile(comprovante)
+                loja_object.comprovante_end.save('comprovante_endereco_loja.' + file['ext'], file['data'])
                 proponente.lojas.add(loja_object)
                 lojas_ids.append(loja_object.id)
         atualiza_coordenadas_lojas(proponente.lojas)
