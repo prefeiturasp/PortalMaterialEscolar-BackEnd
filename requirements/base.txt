@@ -52,9 +52,7 @@ django-admin-interface==0.12.0
 
 # Para gravação de log de alterações nos modelos
 # https://django-auditlog.readthedocs.io/en/latest/index.html
-django-auditlog
-# Pegando última versão diretamente do repositório oficial.
-#-e git://github.com/jjkester/django-auditlog.git##egg=auditlog
+django-auditlog==1.0a1
 
 # PDF
 weasyprint==51
