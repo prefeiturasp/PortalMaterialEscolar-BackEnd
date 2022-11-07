@@ -58,6 +58,8 @@ def gera_excel(request, queryset, csv_data):
         numeros = [loja.numero if isinstance(loja, Loja) else '' for loja in lojas]
         complementos = [loja.complemento if isinstance(loja, Loja) else '' for loja in lojas]
         telefones = [loja.telefone if isinstance(loja, Loja) else '' for loja in lojas]
+        latitudes = [loja.latitude if isinstance(loja, Loja) else '' for loja in lojas]
+        longitudes = [loja.latitude if isinstance(loja, Loja) else '' for loja in lojas]
         fotos_fachada = [
             request.get_host() + loja.foto_fachada.url if isinstance(loja, Loja) and loja.foto_fachada else '' for
             loja in lojas]
@@ -68,11 +70,14 @@ def gera_excel(request, queryset, csv_data):
         csv_data.append_col(numeros, header=f'loja_{i + 1}_numero')
         csv_data.append_col(complementos, header=f'loja_{i + 1}_complemento')
         csv_data.append_col(telefones, header=f'loja_{i + 1}_telefone')
+        csv_data.append_col(longitudes, header=f'loja_{i + 1}_longitude')
+        csv_data.append_col(latitudes, header=f'loja_{i + 1}_latitude')
         csv_data.append_col(fotos_fachada, header=f'loja_{i + 1}_foto_fachada')
     time = now().astimezone().isoformat('T', 'minutes')[:-6]
     filename = f"proponentes_{time}"
-    response = HttpResponse(csv_data.export('xls'), content_type="application/ms-excel")
-    response['Content-Disposition'] = f'attachment; filename={filename}.xls'
+    response = HttpResponse(csv_data.export('xlsx'),
+                            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename={filename}.xlsx'
     return response
 
 
