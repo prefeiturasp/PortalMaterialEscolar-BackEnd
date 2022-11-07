@@ -75,8 +75,9 @@ def gera_excel(request, queryset, csv_data):
         csv_data.append_col(fotos_fachada, header=f'loja_{i + 1}_foto_fachada')
     time = now().astimezone().isoformat('T', 'minutes')[:-6]
     filename = f"proponentes_{time}"
-    response = HttpResponse(csv_data.export('xls'), content_type="application/ms-excel")
-    response['Content-Disposition'] = f'attachment; filename={filename}.xls'
+    response = HttpResponse(csv_data.export('xlsx'),
+                            content_type='application/vnd.openxmlformats-officedocument.spreadsheetml.sheet')
+    response['Content-Disposition'] = f'attachment; filename={filename}.xlsx'
     return response
 
 
