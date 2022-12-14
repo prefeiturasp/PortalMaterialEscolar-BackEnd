@@ -371,3 +371,4 @@ sentry_sdk.init(
 )
 
 GEOREF_API_URL = env('GEOREF_API_URL')
+DATA_UPLOAD_MAX_NUMBER_FIELDS = None
