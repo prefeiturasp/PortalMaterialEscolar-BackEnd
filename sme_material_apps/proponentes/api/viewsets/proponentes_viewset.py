@@ -71,7 +71,7 @@ class ProponentesViewSet(mixins.CreateModelMixin,
             kit_obj = Kit.objects.get(uuid=kit)
             proponente.kits.add(kit_obj)
 
-        if proponente.status != Proponente.STATUS_EM_PROCESSO:
+        if proponente.status == Proponente.STATUS_CREDENCIADO:
             proponente.status = Proponente.STATUS_ALTERADO
             proponente.save()
 
@@ -122,7 +122,8 @@ class ProponentesViewSet(mixins.CreateModelMixin,
             if loja.id not in lojas_ids:
                 proponente.lojas.remove(loja)
 
-        proponente.status = Proponente.STATUS_ALTERADO
+        if proponente.status == Proponente.STATUS_CREDENCIADO:
+            proponente.status = Proponente.STATUS_ALTERADO
         proponente.save()
 
         return Response(ProponenteSerializer(proponente).data, status=status.HTTP_200_OK)
