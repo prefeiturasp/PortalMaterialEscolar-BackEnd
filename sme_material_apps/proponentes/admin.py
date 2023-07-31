@@ -298,6 +298,12 @@ class ProponenteAdmin(admin.ModelAdmin):
 
     get_valor_total_kits.short_description = 'Kits e Valores Fornecidos'
 
+    def data_cadastro(self, obj):
+        return obj.criado_em.strftime("%d/%m/%Y")
+
+    data_cadastro.short_description = 'Data do cadastro'
+    data_cadastro.admin_order_field = 'criado_em'
+
     actions = [
         'verifica_bloqueio_cnpj',
         'muda_status_para_aprovado',
@@ -312,7 +318,7 @@ class ProponenteAdmin(admin.ModelAdmin):
         'gera_excel_action',
         'task_email_documentos_proximos_vencimento_action',
         'task_alterar_status_documentos_vencidos_action']
-    list_display = ('protocolo', 'cnpj', 'razao_social', 'responsavel', 'telefone', 'email', 'status',
+    list_display = ('protocolo', 'cnpj', 'razao_social', 'responsavel', 'telefone', 'email', 'status', 'data_cadastro',
                     'ultima_alteracao', 'kits_fornecidos')
     ordering = ('-alterado_em',)
     search_fields = ('uuid', 'cnpj', 'razao_social', 'responsavel')
