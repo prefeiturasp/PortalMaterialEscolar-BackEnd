@@ -3,6 +3,7 @@ pipeline {
       branchname =  env.BRANCH_NAME.toLowerCase()
       kubeconfig = getKubeconf(env.branchname)
       registryCredential = 'jenkins_registry'
+      namespace = "${env.branchname == 'develop' ? 'materialescolar-dev' : env.branchname == 'homolog' ? 'materialescolar-hom' : env.branchname == 'homolog-r2' ? 'materialescolar-hom2' : 'sme-materialescolar' }"	    
     }
   
     agent {
@@ -62,10 +63,10 @@ pipeline {
                     }
                     withCredentials([file(credentialsId: "${kubeconfig}", variable: 'config')]){
                         sh('cp $config '+"$home"+'/.kube/config')
-                        sh 'kubectl rollout restart deployment/materialescolar-backend -n sme-materialescolar'
-                        sh 'kubectl rollout restart deployment/materialescolar-beat -n sme-materialescolar'
-                        sh 'kubectl rollout restart deployment/materialescolar-celery -n sme-materialescolar'
-                        sh 'kubectl rollout restart deployment/materialescolar-flower -n sme-materialescolar'
+                        sh 'kubectl rollout restart deployment/materialescolar-backend -n ${namespace}'
+                        sh 'kubectl rollout restart deployment/materialescolar-beat -n ${namespace}'
+                        sh 'kubectl rollout restart deployment/materialescolar-celery -n ${namespace}'
+                        sh 'kubectl rollout restart deployment/materialescolar-flower -n ${namespace}'
                         sh('rm -f '+"$home"+'/.kube/config')
                     }
                 }
@@ -95,7 +96,7 @@ def sendTelegram(message) {
 def getKubeconf(branchName) {
     if("main".equals(branchName)) { return "config_prd"; }
     else if ("master".equals(branchName)) { return "config_prd"; }
-    else if ("homolog".equals(branchName)) { return "config_hom"; }
-    else if ("release".equals(branchName)) { return "config_hom"; }
-    else if ("develop".equals(branchName)) { return "config_dev"; }	
+    else if ("homolog".equals(branchName)) { return "config_release"; }
+    else if ("release".equals(branchName)) { return "config_release"; }
+    else if ("develop".equals(branchName)) { return "config_release"; }	
 }
