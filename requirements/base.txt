@@ -55,7 +55,7 @@ django-admin-interface==0.12.0
 django-auditlog==1.0a1
 
 # PDF
-weasyprint==51
+weasyprint==68.0
 django-sass-processor==0.8
 django-compressor==2.4
 libsass==0.19.4
