@@ -334,6 +334,8 @@ class ProponenteAdmin(admin.ModelAdmin):
 class OfertaDeMaterialAdmin(admin.ModelAdmin):
     @staticmethod
     def protocolo(oferta):
+        if not oferta.proponente_id:
+            return "-"
         return oferta.proponente.protocolo
 
     list_display = ('protocolo', 'proponente', 'material', 'preco')
@@ -346,6 +348,8 @@ class OfertaDeMaterialAdmin(admin.ModelAdmin):
 class LojaAdmin(admin.ModelAdmin):
     @staticmethod
     def protocolo(loja):
+        if not loja.proponente_id:
+            return "-"
         return loja.proponente.protocolo
 
     @staticmethod

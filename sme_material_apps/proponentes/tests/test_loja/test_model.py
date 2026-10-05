@@ -1,6 +1,8 @@
 import pytest
+from django.contrib.admin import AdminSite
 from django.core.exceptions import ValidationError
 
+from ...admin import LojaAdmin
 from ...models import Loja
 
 pytestmark = pytest.mark.django_db
@@ -8,6 +10,19 @@ pytestmark = pytest.mark.django_db
 
 def test_loja(proponente, loja_fisica):
     assert isinstance(loja_fisica, Loja)
+
+
+def test_admin_loja_protocolo_nao_quebra_sem_proponente():
+    loja_admin = LojaAdmin(Loja, AdminSite())
+    loja = Loja(
+        nome_fantasia="Loja Sem Proponente",
+        cep="01001-000",
+        endereco="Rua Teste",
+        bairro="Centro",
+        numero="100",
+    )
+
+    assert loja_admin.protocolo(loja) == "-"
 
 
 def test_validacao_telefone_fora_formato(proponente):
