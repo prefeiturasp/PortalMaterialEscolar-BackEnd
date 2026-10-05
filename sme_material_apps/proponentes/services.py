@@ -1,8 +1,9 @@
 import logging
 
 import requests
-from django.db.models import Count, Max
 from django.conf import settings
+from django.db import transaction
+from django.db.models import Count, Max
 from django.utils.timezone import now
 from django.contrib.auth import get_user_model
 from django.http.response import HttpResponse
@@ -23,16 +24,18 @@ def cria_usuario_novo_proponente(proponente):
 
 def muda_status_de_proponentes(queryset, novo_status):
     for proponente in queryset.all():
-        if proponente.status != novo_status:
-            proponente.status = novo_status
-            proponente.save()
-        if novo_status == "CREDENCIADO":
-            atualiza_coordenadas_lojas(proponente.lojas)
+        with transaction.atomic():
+            if proponente.status != novo_status:
+                proponente.status = novo_status
+                proponente.save()
+            if novo_status == "CREDENCIADO":
+                atualiza_coordenadas_lojas(proponente.lojas)
 
 
 def atualiza_coordenadas(queryset):
     for proponente in queryset.all():
-        atualiza_coordenadas_lojas(proponente.lojas)
+        with transaction.atomic():
+            atualiza_coordenadas_lojas(proponente.lojas)
 
 
 def envia_email_pendencias(queryset):

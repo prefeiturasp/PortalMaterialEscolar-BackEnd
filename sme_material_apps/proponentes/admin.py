@@ -1,4 +1,5 @@
 from django.contrib import admin
+from django.db import transaction
 from django.utils.safestring import mark_safe
 from django.contrib import messages
 from django.contrib.admin import SimpleListFilter
@@ -379,18 +380,20 @@ class LojaAdmin(admin.ModelAdmin):
 @admin.register(TipoDocumento)
 class TipoDocumentoAdmin(admin.ModelAdmin):
     def inverte_visivel(self, request, queryset):
-        for tipo_documento in queryset.all():
-            tipo_documento.visivel = not tipo_documento.visivel
-            tipo_documento.save()
+        with transaction.atomic():
+            for tipo_documento in queryset.all():
+                tipo_documento.visivel = not tipo_documento.visivel
+                tipo_documento.save()
 
         self.message_user(request, "Parâmetro 'visível' atualizado.")
 
     inverte_visivel.short_description = "Inverter o parâmetro 'visível' "
 
     def inverte_obrigatorio(self, request, queryset):
-        for tipo_documento in queryset.all():
-            tipo_documento.obrigatorio = not tipo_documento.obrigatorio
-            tipo_documento.save()
+        with transaction.atomic():
+            for tipo_documento in queryset.all():
+                tipo_documento.obrigatorio = not tipo_documento.obrigatorio
+                tipo_documento.save()
 
         self.message_user(request, "Parâmetro 'obrigatório' atualizado.")
 
