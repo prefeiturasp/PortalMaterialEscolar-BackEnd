@@ -1,6 +1,6 @@
 #FROM python:3.6-jessie
-FROM python:3.6-buster
-ENV PYTHONUNBUFFERED 1
+FROM python:3.6-bookworm
+ENV PYTHONUNBUFFERED=1
 ADD . /code
 WORKDIR /code
 RUN apt-get update && apt-get install libpq-dev -y && \
