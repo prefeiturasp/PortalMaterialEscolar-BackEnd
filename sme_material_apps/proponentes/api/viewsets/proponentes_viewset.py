@@ -2,6 +2,7 @@ import base64
 import logging
 
 from django.core.files.base import ContentFile
+from django.db import transaction
 from django_filters import rest_framework as filters
 from rest_framework import mixins, status
 from rest_framework.decorators import action
@@ -46,6 +47,7 @@ class ProponentesViewSet(mixins.CreateModelMixin,
             return ProponenteCreateSerializer
 
     @action(detail=True, methods=['patch'], url_path='tabela-precos')
+    @transaction.atomic
     def tabela_precos(self, request, uuid):
         proponente = self.get_object()
         proponente.ofertas_de_materiais.all().delete()
@@ -78,6 +80,7 @@ class ProponentesViewSet(mixins.CreateModelMixin,
         return Response(ProponenteSerializer(proponente).data, status=status.HTTP_200_OK)
 
     @action(detail=True, methods=['patch'], url_path='atualiza-lojas')
+    @transaction.atomic
     def atualiza_lojas(self, request, uuid):
         proponente = self.get_object()
         lojas = request.data.pop('lojas')
